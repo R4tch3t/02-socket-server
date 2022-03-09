@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    @apply h-full;
+}
+html{
+  @apply bg-white
+}
+/*body{
+  @apply overflow-hidden
+}*/
+#__next {
+  @apply h-full;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.select-feed:hover{
+  background-color:aliceblue;
+  color: #0070f3;
+  border-color: #0070f3;
+  cursor: pointer;
+}
+
+.chatBoxMain{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.chatBox{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.wMid{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items:center;
+}
+
+.chatDivDe{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.chatDivPara{
+  display: flex;
+  flex-direction: column;
+  justify-content:left;
+  align-self: flex-start;
+  
+}
+
+.mainFlow{
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0px;
+}
+
+.chatFlow{
+  overflow: auto;
+}
+
+.msjDe{
+  padding-left: 15px;
+  background-color: #0070f3;
+  border-radius: 20px;
+  margin-bottom: 3px;
+  max-width: 100%;
+}
+
+.msjPara{
+  align-self:flex-end;
+  padding-right: 15px;
+  background-color:aquamarine;
+  border-radius: 20px;
+  margin-bottom: 3px;
+}
+
+.whiteTxt{
+  color: rgb(255, 255, 255);
+}
+
+.titlePara{
+  width: auto;
+  color:darkgray;
+}
+
+.wrapText {
+  overflow-x: hidden;
+  overflow-y: auto; 
+  word-wrap: break-word;
+  max-width: 750px; 
+  max-height: 400px
+}
+
+.padSett{
+  position: relative;
+  padding-bottom: 30px;
+}
+
+.inputTop{
+  position: relative;
+  top: -10px
+}
+
+.tabSettings{
+  cursor: pointer;
+}
+

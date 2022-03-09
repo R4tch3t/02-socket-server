@@ -1,0 +1,11 @@
+overwrite: true
+schema: "http://localhost:3000/graphql"
+documents: './src/**/*.ts'
+generates:
+  ./src/client-nextts/pages/graphql/generated.tsx:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-urql
+    config:
+      withHooks: false
