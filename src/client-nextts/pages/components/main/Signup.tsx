@@ -1,16 +1,13 @@
 import type {NextPage} from 'next'
-import { useState } from 'react';
-import { useAppContext } from './auth/authContext';
-import Logo from './components/Logo';
-import {ModalError} from './components/ModalError';
-import {ModalSuccess} from './components/ModalSucces';
-
+import { useEffect, useState } from 'react';
+import { useAppContext } from '../../auth/authContext';
+import { ModalError } from '../ModalError';
+import { ModalSuccess } from '../ModalSucces';
 
 
 const Signup: NextPage = () => {
-    //const [sLog, setSLog] = useState({band: false, success: ['']})
-    //const [eLog, setELog] = useState({band: false, errors: ['']})
-    const [modalS, setModalS] = useState(false)
+  const {auth}:any = useAppContext();
+  const [modalS, setModalS] = useState(false)
     const [modalE, setModalE] = useState(false)
     const [dataModal, setDataModal] = useState({title: '', txt:'', btnTxt:''})
     const {signup}:any = useAppContext()
@@ -82,38 +79,26 @@ const Signup: NextPage = () => {
                 ?true:false
     }
 
-    return (
-    <>
+  return (
+    <main className="-mt-24">
+          {/*
+            This example requires updating your template:
     
-        {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-50">
-        <body class="h-full">
-        ```
-        */}
-        {/*eLog.band&&<Errors e={eLog.errors} setELog={setELog} />}
-        sLog.band&&<Success s={sLog.success} setSLog={setSLog} />*/}
-        {modalS && <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
+            ```
+            <html class="h-full bg-gray-50">
+            <body class="h-full">
+            ```
+          */}
+          {/*eLog.band&&<Errors e={eLog.errors} setELog={setELog} />*/}
+          {modalS && <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
         txt={dataModal.txt} btnTxt={dataModal.btnTxt} />}
         {modalE && <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
         txt={dataModal.txt} btnTxt={dataModal.btnTxt} />}
-        
-        <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-            {/*<UsuariosQ />*/}
-            <Logo width={100} height={100} />
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Registrar una cuenta</h2>
-            {/*<p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
-            <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                start your 14-day free trial
-            </a>
-            </p>*/}
-        </div>
-
-        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+          
+          {!auth.logged && <div className="min-h-full flex flex-col justify-center py-12 sm:px-22 lg:px-22">
+          <h2 className='rightH2' >REGISTRO</h2>
+    
+          <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <form className="space-y-6" onSubmit={onSubmit} method="POST">
                 <div>
@@ -192,10 +177,12 @@ const Signup: NextPage = () => {
             
             </div>
         </div>
-        </div>
-    </>
-    )
 
+          </div>}
+          
+        </main>
+      );
+  
 }
 
 export default Signup

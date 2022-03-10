@@ -19,6 +19,7 @@ import { useAppContext } from './auth/authContext'
 import {Settings} from './components/Settings'
 import {RedirecApp} from './router/RedirecApp'
 import Router  from 'next/router'
+import Logo from './components/Logo'
 
 
 
@@ -107,11 +108,7 @@ const Perfil: NextPage = () => {
                 </Transition.Child>
                 <div className="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
                   <div className="flex-shrink-0 flex items-center px-4">
-                    <img
-                      className="h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-900-text.svg"
-                      alt="Workflow"
-                    />
+                    <Logo width={100} height={100} />
                   </div>
                   <nav aria-label="Sidebar" className="mt-5">
                     <div className="px-2 space-y-1">

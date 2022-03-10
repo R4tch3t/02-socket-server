@@ -10,7 +10,7 @@ body {
     @apply h-full;
 }
 html{
-  @apply bg-white
+  @apply bg-gray-100;
 }
 /*body{
   @apply overflow-hidden
@@ -127,3 +127,12 @@ a {
   cursor: pointer;
 }
 
+.logoUAG {
+  width: 100%;
+  text-align: center;
+}
+
+.rightH2{
+  text-align: center;
+  margin-top: 15px
+}

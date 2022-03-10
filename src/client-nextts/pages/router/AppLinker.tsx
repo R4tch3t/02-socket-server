@@ -4,6 +4,8 @@ import React, { useEffect } from 'react';
 import { useAppContext } from '../auth/authContext';
 
 import Chat from "../subPages/Chat"
+import {Home} from '../subPages/Home';
+import MainHomen from '../components/main/Home'
 import {RedirecApp} from './RedirecApp';
 //import Login from "../login"
 //import Registro from "../sigin"
@@ -25,7 +27,7 @@ const AppLinker = () =>{
     /*useEffect(()=>{
         verificaToken();
       },[]);*/
-    Router.push("/login");
+    //Router.push("/login");
   }
 
 return (<>
@@ -57,7 +59,8 @@ return (<>
             </li>
         </ul>*/}
     </header>
-    {auth.logged&&<Chat/>}
+    {/*auth.logged&&<Chat/>*/}
+    <Home Children={MainHomen} />
     </>
 );
 }

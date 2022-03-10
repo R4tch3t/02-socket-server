@@ -10,6 +10,9 @@ const nextConfig = {
       },
     ];
   },
+  images: {
+    domains: ['upload.wikimedia.org'],
+  }
   /*exportPathMap: async function (
     defaultPathMap,
     { dev, dir, outDir, distDir, buildId }

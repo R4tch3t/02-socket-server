@@ -6,7 +6,7 @@ export const RedirecApp=() => {
     
     useEffect(()=>{
         verificaToken();
-    },[]);
+    },[verificaToken]);
 
     console.log(auth)
 
