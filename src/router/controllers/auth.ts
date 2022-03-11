@@ -1,13 +1,16 @@
 import { response, request } from "express";
-import { Usuario } from "../../entities/Usuario";
+
 import {randomUUID} from "crypto"
 import bcrypt from "bcryptjs"
 import {generarJWT} from "../helpers/jwt"
+import { Usuario } from "../../entities/postgres/Usuario";
+import { Connection, getConnection } from "typeorm";
 
 const crearUsuario = async (req=request, res=response)=>{
     try{
+        const usersConn:Connection = getConnection('usersConn');
         const {email, password} = req.body
-        const existeEmail = await Usuario.findOne({email});
+        const existeEmail = await usersConn.getRepository(Usuario).findOne({email});
         if(existeEmail){
             return res.status(400).json({
                 ok: false,
@@ -15,7 +18,7 @@ const crearUsuario = async (req=request, res=response)=>{
             });    
         }
         
-        const usuario: any = Usuario.create(req.body)
+        const usuario: any = usersConn.getRepository(Usuario).create(req.body)
         const salt = bcrypt.genSaltSync();
 
         //gen uuid and password encrypt
@@ -45,8 +48,10 @@ const crearUsuario = async (req=request, res=response)=>{
 const login = async (req=request, res=response)=>{
     
     try{
+        const usersConn:Connection = getConnection('usersConn');
         const {email, password} = req.body
-        const usuario = await Usuario.findOne({email});
+        const usuario = await usersConn.getRepository(Usuario).findOne({email});
+        
         if(!usuario){
             return res.status(404).json({
                 ok: false,
@@ -83,13 +88,14 @@ const login = async (req=request, res=response)=>{
 }
 
 const renew = async (req=request, res=response)=>{
+    const usersConn:Connection = getConnection('usersConn');
     const {id, uuid}:any = req;
 
     //generar nuevo JWT
     const token = await generarJWT(id,uuid);
 
     //obtenr usuario por uuid
-    const usuario = await Usuario.findOne({uuid})
+    const usuario = await usersConn.getRepository(Usuario).findOne({uuid})
 
     res.json({
         ok: true,
@@ -102,9 +108,10 @@ const renew = async (req=request, res=response)=>{
 
 const updateUser = async (req=request, res=response)=>{
     try{
+        const usersConn:Connection = getConnection('usersConn');
         const {id, uuid, nombre, email, newEmail} = req.body.user
         
-        let usuario:any = await Usuario.findOne({email: newEmail});
+        let usuario:any = await usersConn.getRepository(Usuario).findOne({email: newEmail});
         if(newEmail !== email && usuario){
             return res.status(400).json({
                 ok: false,
@@ -112,7 +119,7 @@ const updateUser = async (req=request, res=response)=>{
             });    
         }
 
-        usuario = await Usuario.findOne({email});
+        usuario = await usersConn.getRepository(Usuario).findOne({email});
         if(!usuario){
             return res.status(400).json({
                 ok: false,
@@ -150,9 +157,10 @@ const updateUser = async (req=request, res=response)=>{
 
 const updateUserPass = async (req=request, res=response)=>{
     try{
+        const usersConn:Connection = getConnection('usersConn');
         const {id, uuid, email, password, newPass} = req.body.user
         
-        let usuario = await Usuario.findOne({email});
+        let usuario = await usersConn.getRepository(Usuario).findOne({email});
         if(!usuario){
             return res.status(400).json({
                 ok: false,

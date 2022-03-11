@@ -1,8 +1,8 @@
 import {Resolver, Query, Mutation, Arg, Field, InputType, Int } from "type-graphql";
-import { Usuario } from "../entities/Usuario";
 import {randomUUID} from "crypto"
 import { gql } from "urql";
 import { DocumentNode } from "graphql";
+import { Usuario } from "../../entities/mongoDB/Usuario";
 
 const postsQueryDocument = gql`
   query Usuarios {

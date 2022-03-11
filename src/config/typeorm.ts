@@ -1,4 +1,4 @@
-import { createConnection } from "typeorm";
+import { createConnections } from "typeorm";
 import path from "path";
 export async function connect(){
 
@@ -15,19 +15,35 @@ export async function connect(){
     //     synchronize: true
     // })
     
-    await createConnection({
-        type: "mongodb",
-        url: process.env.MONGO_TYPEO,
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-       // retryWrites: true,
-        synchronize: false,
-       // logging: true,
-        entities: [
-            path.join(__dirname,'../entity/**/**.ts'),
-            path.join(__dirname,'../entities/**/**.ts')
-        ],
-    });
+    await createConnections([{
+            name: "chatConn",
+            type: "mongodb",
+            url: process.env.MONGO_TYPEO,
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        // retryWrites: true,
+            synchronize: false,
+        // logging: true,
+            entities: [
+                path.join(__dirname,'../entity/**/**.ts'),
+                path.join(__dirname,'../entities/mongoDB/**/**.ts')
+            ],
+        },
+        {
+            name: "usersConn",
+            type: 'postgres',
+            host: 'localhost',
+            port: 5432,
+            username: 'postgres',
+            password: 'R4tch3t',
+            database: 'chatApp',
+            entities: [
+                path.join(__dirname,'../entity/**/**.ts'),
+                path.join(__dirname,'../entities/postgres/**/**.ts')
+            ],
+            synchronize: true
+        }
+    ]);
 
     //await createConnection({
     //    type: 'postgres',

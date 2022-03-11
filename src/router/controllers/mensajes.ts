@@ -1,6 +1,9 @@
-import { Mensaje } from "../../entities/Mensaje";
-import { Usuario } from "../../entities/Usuario";
+import { Connection, getConnection } from "typeorm";
+import { Mensaje } from "../../entities/mongoDB/Mensaje"
+
+
 const obtenerChat = async (req:any, res:any)=>{
+    const chatConn:Connection = getConnection('chatConn');
     const {id,uuid} = req
     const {de} = req.params
 
@@ -19,7 +22,7 @@ const obtenerChat = async (req:any, res:any)=>{
         
     });*/ //OTHER DB
 
-    const mensajes:any = await Mensaje.find({
+    const mensajes:any = await chatConn.getRepository(Mensaje).find({
         where: {
             $or: [{de: id, para: de } , {de: de, para: id}]
         },

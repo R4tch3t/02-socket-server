@@ -2,8 +2,9 @@ import { DocumentNode } from "graphql";
 import {Resolver, Query, Mutation, Arg, Field, InputType, Int } from "type-graphql";
 import { Column } from "typeorm";
 import { gql } from "urql";
-import { Mensaje } from "../entities/Mensaje";
-import { Usuario } from "../entities/Usuario";
+import { Mensaje } from "../../entities/mongoDB/Mensaje";
+import { Usuario } from "../../entities/mongoDB/Usuario";
+
 
 const postsQueryDocument = gql`
 query Mensajes ($paraUuid: String!, $paraId: Int!, $deUuid: String!, $deId: Int!) {

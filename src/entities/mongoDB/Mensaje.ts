@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType } from "type-graphql";
-import { BaseEntity, Column, CreateDateColumn, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, ObjectIdColumn, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, Index, JoinColumn, JoinTable, getConnection, ManyToMany, ManyToOne, ObjectIdColumn, PrimaryGeneratedColumn } from "typeorm";
 import { Usuario } from "./Usuario";
 
 @ObjectType()
@@ -7,6 +7,10 @@ import { Usuario } from "./Usuario";
 @Entity("Mensaje", { schema: "public" })
 export class Mensaje extends BaseEntity {
   
+  constructor(){
+    super()
+    getConnection('chatConn')
+  }
   @Field()
   //@Column("integer", { primary: true, name: "id" })
   //@PrimaryGeneratedColumn() OTHER DATABASE

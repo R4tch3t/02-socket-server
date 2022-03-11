@@ -1,24 +1,31 @@
-import { Usuario } from "../../entities/Usuario";
-import { Mensaje } from "../../entities/Mensaje";
+import { Connection, getConnection, Repository } from "typeorm";
+import { Mensaje } from "../../entities/mongoDB/Mensaje";
+import { Usuario, getRepo } from "../../entities/postgres/Usuario";
 
 const usuarioConectado = async ({id,uuid}:any)=>{
-    const usuario:any = await Usuario.findOne(id);
+    
+    const userRepo:any = getRepo();//.findOne(id);
+    const usuario:any = await userRepo.findOne(id);
+    
     usuario.online=true;
-    await usuario.save();
-
+    await userRepo.save(usuario);
+    
     return usuario;
 }
 
 const usuarioDesconectado = async ({id,uuid}:any)=>{
-    const usuario:any = await Usuario.findOne(id);
+    
+    const userRepo:any = getRepo();
+    const usuario:any = await userRepo.findOne(id);
     usuario.online=false;
-    await usuario.save();
+    await userRepo.save(usuario);
 
     return usuario;
 }
 
 const getUsuarios = async ()=>{
-    const usuarios:any = await Usuario.find({order: {
+    const usersConn:Connection = getConnection('usersConn');
+    const usuarios:any = await usersConn.getRepository(Usuario).find({order: {
         online: "DESC",
     }});
     
@@ -27,7 +34,8 @@ const getUsuarios = async ()=>{
 
 const grabarMensaje = async (payload:any) => {
     try{
-       const mensaje:any = Mensaje.create(payload);
+       const chatConn:Connection = getConnection('chatConn');
+       const mensaje:any = chatConn.getRepository(Mensaje).create(payload);
        //const usuario:any = await Usuario.findOne(payload.para);
        await mensaje.save();
        //mensaje.para=usuario
