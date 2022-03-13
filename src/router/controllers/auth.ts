@@ -3,14 +3,15 @@ import { response, request } from "express";
 import {randomUUID} from "crypto"
 import bcrypt from "bcryptjs"
 import {generarJWT} from "../helpers/jwt"
-import { Usuario } from "../../entities/postgres/Usuario";
-import { Connection, getConnection } from "typeorm";
+import { getRepo } from "../../config/typeorm";
 
 const crearUsuario = async (req=request, res=response)=>{
     try{
-        const usersConn:Connection = getConnection('usersConn');
+
+        const userRepo:any = getRepo('usersConn','Usuario');
         const {email, password} = req.body
-        const existeEmail = await usersConn.getRepository(Usuario).findOne({email});
+        const existeEmail = await userRepo.findOne({email});
+        
         if(existeEmail){
             return res.status(400).json({
                 ok: false,
@@ -18,7 +19,7 @@ const crearUsuario = async (req=request, res=response)=>{
             });    
         }
         
-        const usuario: any = usersConn.getRepository(Usuario).create(req.body)
+        const usuario: any = userRepo.create(req.body)
         const salt = bcrypt.genSaltSync();
 
         //gen uuid and password encrypt
@@ -26,7 +27,7 @@ const crearUsuario = async (req=request, res=response)=>{
         usuario.password=bcrypt.hashSync(password,salt);
 
         console.log(usuario)
-        await usuario.save();
+        await userRepo.save(usuario);
         
         //generar JWT
         const token = await generarJWT(usuario.id,usuario.uuid);
@@ -48,9 +49,9 @@ const crearUsuario = async (req=request, res=response)=>{
 const login = async (req=request, res=response)=>{
     
     try{
-        const usersConn:Connection = getConnection('usersConn');
+        const userRepo:any = getRepo('usersConn','Usuario');
         const {email, password} = req.body
-        const usuario = await usersConn.getRepository(Usuario).findOne({email});
+        const usuario = await userRepo.findOne({email});
         
         if(!usuario){
             return res.status(404).json({
@@ -88,14 +89,14 @@ const login = async (req=request, res=response)=>{
 }
 
 const renew = async (req=request, res=response)=>{
-    const usersConn:Connection = getConnection('usersConn');
+    const userRepo:any = getRepo('usersConn','Usuario');
     const {id, uuid}:any = req;
 
     //generar nuevo JWT
     const token = await generarJWT(id,uuid);
 
     //obtenr usuario por uuid
-    const usuario = await usersConn.getRepository(Usuario).findOne({uuid})
+    const usuario = await userRepo.findOne({uuid})
 
     res.json({
         ok: true,
@@ -108,10 +109,10 @@ const renew = async (req=request, res=response)=>{
 
 const updateUser = async (req=request, res=response)=>{
     try{
-        const usersConn:Connection = getConnection('usersConn');
+        const userRepo:any = getRepo('usersConn','Usuario');
         const {id, uuid, nombre, email, newEmail} = req.body.user
         
-        let usuario:any = await usersConn.getRepository(Usuario).findOne({email: newEmail});
+        let usuario:any = await userRepo.findOne({email: newEmail});
         if(newEmail !== email && usuario){
             return res.status(400).json({
                 ok: false,
@@ -119,7 +120,7 @@ const updateUser = async (req=request, res=response)=>{
             });    
         }
 
-        usuario = await usersConn.getRepository(Usuario).findOne({email});
+        usuario = await userRepo.findOne({email});
         if(!usuario){
             return res.status(400).json({
                 ok: false,
@@ -136,7 +137,7 @@ const updateUser = async (req=request, res=response)=>{
         //usuario.password=bcrypt.hashSync(password,salt);
 
         console.log(usuario)
-        await usuario.save();
+        await userRepo.save(usuario);
         
         //generar JWT
         const token = await generarJWT(usuario.id,usuario.uuid);
@@ -157,10 +158,10 @@ const updateUser = async (req=request, res=response)=>{
 
 const updateUserPass = async (req=request, res=response)=>{
     try{
-        const usersConn:Connection = getConnection('usersConn');
+        const userRepo:any = getRepo('usersConn','Usuario');
         const {id, uuid, email, password, newPass} = req.body.user
         
-        let usuario = await usersConn.getRepository(Usuario).findOne({email});
+        let usuario = await userRepo.findOne({email});
         if(!usuario){
             return res.status(400).json({
                 ok: false,
@@ -185,7 +186,7 @@ const updateUserPass = async (req=request, res=response)=>{
         usuario.password=bcrypt.hashSync(newPass,salt);
 
         console.log(usuario)
-        await usuario.save();
+        await userRepo.save(usuario);
         
         //generar JWT
         const token = await generarJWT(usuario.id,usuario.uuid);

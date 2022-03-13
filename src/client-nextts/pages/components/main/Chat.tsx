@@ -71,6 +71,7 @@ const Home = () => {
           iconBackground: 'bg-indigo-50',
         },
       ]
+
       const {chatState}:any = useChatContext();
       let onlineU = 0;
       const listaU = chatState.usuarios.length-1;
@@ -80,8 +81,8 @@ const Home = () => {
       const offlineU=listaU-onlineU
       const stats = [
         { label: 'Usuarios en lista', value: listaU },
-        { label: 'Usuarios conectados', value: onlineU },
-        { label: 'Usuarios desconectados', value: offlineU },
+        { label: (onlineU === 1? 'Usuario conectado' : 'Usuarios conectados'), value: onlineU },
+        { label: (offlineU === 1? 'Usuario desconectado':'Usuarios desconectados'), value: offlineU },
       ]
 
      // let [btnHome, setBtnHome]:any = useState([{html: 'Ver perfil', href: '#'}]);
