@@ -1,31 +1,40 @@
-import { Connection, getConnection, Repository } from "typeorm";
-import { Mensaje } from "../../entities/mongoDB/Mensaje";
-import { Usuario, getRepo } from "../../entities/postgres/Usuario";
+//import { Connection, getConnection, Repository } from "typeorm";
+import { getRepo } from "../../config/typeorm";
+//import { Mensaje } from "../../entities/mongoDB/Mensaje";
+//import { Usuario } from "../../entities/postgres/Usuario";
 
 const usuarioConectado = async ({id,uuid}:any)=>{
-    
-    const userRepo:any = getRepo();//.findOne(id);
-    const usuario:any = await userRepo.findOne(id);
-    
-    usuario.online=true;
-    await userRepo.save(usuario);
-    
-    return usuario;
+    try{
+        const userRepo:any = getRepo('usersConn','Usuario');//.findOne(id);
+        const usuario:any = await userRepo.findOne(id);
+        
+        usuario.online=true;
+        await userRepo.save(usuario);
+        
+        return usuario;
+    }catch(e){
+        console.log(e)
+        return
+    }
 }
 
 const usuarioDesconectado = async ({id,uuid}:any)=>{
-    
-    const userRepo:any = getRepo();
-    const usuario:any = await userRepo.findOne(id);
-    usuario.online=false;
-    await userRepo.save(usuario);
+    try{
+        const userRepo:any = getRepo('usersConn','Usuario');
+        const usuario:any = await userRepo.findOne(id);
+        usuario.online=false;
+        await userRepo.save(usuario);
 
-    return usuario;
+        return usuario;
+    }catch(e){
+        console.log(e)
+        return
+    }
 }
 
 const getUsuarios = async ()=>{
-    const usersConn:Connection = getConnection('usersConn');
-    const usuarios:any = await usersConn.getRepository(Usuario).find({order: {
+    const userRepo:any = getRepo('usersConn','Usuario');
+    const usuarios:any = await userRepo.find({order: {
         online: "DESC",
     }});
     
@@ -34,10 +43,13 @@ const getUsuarios = async ()=>{
 
 const grabarMensaje = async (payload:any) => {
     try{
-       const chatConn:Connection = getConnection('chatConn');
-       const mensaje:any = chatConn.getRepository(Mensaje).create(payload);
+       //const chatConn:Connection = getConnection('chatConn');
+       const msgRepo:any = getRepo('chatConn','Mensaje');
+       //payload.para+=""
+       //payload.de+=""
+       const mensaje:any = msgRepo.create(payload);
        //const usuario:any = await Usuario.findOne(payload.para);
-       await mensaje.save();
+       await msgRepo.save(mensaje);
        //mensaje.para=usuario
        return mensaje;
     }catch(e){

@@ -1,11 +1,12 @@
-import { Connection, getConnection } from "typeorm";
+import { getRepo } from "../../config/typeorm";
 import { Mensaje } from "../../entities/mongoDB/Mensaje"
 
 
 const obtenerChat = async (req:any, res:any)=>{
-    const chatConn:Connection = getConnection('chatConn');
-    const {id,uuid} = req
-    const {de} = req.params
+    //const chatConn:Connection = getConnection('chatConn');
+    const msgRepo:any = getRepo('chatConn','Mensaje');
+    let {id,uuid} = req
+    let {de} = req.params
 
     console.log(id)
     console.log(de)
@@ -21,10 +22,13 @@ const obtenerChat = async (req:any, res:any)=>{
         take: 30,
         
     });*/ //OTHER DB
-
-    const mensajes:any = await chatConn.getRepository(Mensaje).find({
-        where: {
-            $or: [{de: id, para: de } , {de: de, para: id}]
+    id=parseInt(id);
+    de=parseInt(de);//parse to ID int for a PrimaryGeneratedColumn SQL DB's
+    const mensajes:any = await msgRepo.find({
+        //de: { $type: 16 },
+        //para: { $type: 16 }, //innecesary in these case, but is util
+        where: {            
+            $or:  [{de: id, para: de } , {de: de, para: id}]
         },
         order: {
             //id: "ASC",
@@ -35,7 +39,7 @@ const obtenerChat = async (req:any, res:any)=>{
 
     });//mongo
     
-    console.log(mensajes)
+    //console.log(mensajes)
     /*const last30: any = await Mensaje.createQueryBuilder("m")
     .leftJoinAndSelect("m.de","de")
     .leftJoinAndSelect("m.para","para")

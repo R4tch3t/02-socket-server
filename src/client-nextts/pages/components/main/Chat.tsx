@@ -7,17 +7,24 @@ import {
     ReceiptRefundIcon,
     UsersIcon,
   } from '@heroicons/react/outline'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppContext } from '../../auth/authContext';
 import Login from './Login';
 import Signup from './Signup';
+import {Feed} from '../Feed'
+import { useChatContext } from '../../context/chat/ChatContext';
+import Chatbox from '../Chatbox';
   
 function classNames(...classes:any) {
     return classes.filter(Boolean).join(' ')
 }
 const Home = () => {
+  //console.log("Dimension")
+  //console.log(window.innerHeight)
+    const height = window.innerHeight*0.8;
+
     const {auth,logout}:any = useAppContext();
-    const [state, setState]:any = useState({logBand: true, btnHome: [{html: 'Ver perfil', href: '/perfil'}]});
+    const [state, setState]:any = useState({logBand: true, btnHome: [{html: 'Ver perfil', href: '#'}]});
     const user = {
         name: auth.name,
         email: auth.email,
@@ -64,64 +71,19 @@ const Home = () => {
           iconBackground: 'bg-indigo-50',
         },
       ]
-      const recentHires = [
-        {
-          name: 'Leonard Krasner',
-          handle: 'leonardkrasner',
-          imageUrl:
-            'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-          href: '#',
-        },
-        {
-          name: 'Floyd Miles',
-          handle: 'floydmiles',
-          imageUrl:
-            'https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-          href: '#',
-        },
-        {
-          name: 'Emily Selman',
-          handle: 'emilyselman',
-          imageUrl:
-            'https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-          href: '#',
-        },
-        {
-          name: 'Kristin Watson',
-          handle: 'kristinwatson',
-          imageUrl:
-            'https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-          href: '#',
-        },
-      ]
-      const announcements = [
-        {
-          id: 1,
-          title: 'Office closed on July 2nd',
-          href: '#',
-          preview:
-            'Cum qui rem deleniti. Suscipit in dolor veritatis sequi aut. Vero ut earum quis deleniti. Ut a sunt eum cum ut repudiandae possimus. Nihil ex tempora neque cum consectetur dolores.',
-        },
-        {
-          id: 2,
-          title: 'New password policy',
-          href: '#',
-          preview:
-            'Alias inventore ut autem optio voluptas et repellendus. Facere totam quaerat quam quo laudantium cumque eaque excepturi vel. Accusamus maxime ipsam reprehenderit rerum id repellendus rerum. Culpa cum vel natus. Est sit autem mollitia.',
-        },
-        {
-          id: 3,
-          title: 'Office closed on July 2nd',
-          href: '#',
-          preview:
-            'Tenetur libero voluptatem rerum occaecati qui est molestiae exercitationem. Voluptate quisquam iure assumenda consequatur ex et recusandae. Alias consectetur voluptatibus. Accusamus a ab dicta et. Consequatur quis dignissimos voluptatem nisi.',
-        },
-      ]
+      const {chatState}:any = useChatContext();
+      let onlineU = 0;
+      const listaU = chatState.usuarios.length-1;
+      chatState.usuarios.filter((user:any)=>user.id!==auth.id).map((v:any)=>{
+        onlineU+=v.online??1
+      });
+      const offlineU=listaU-onlineU
       const stats = [
-        { label: 'Vacation days left', value: 12 },
-        { label: 'Sick days left', value: 4 },
-        { label: 'Personal days left', value: 2 },
+        { label: 'Usuarios en lista', value: listaU },
+        { label: 'Usuarios conectados', value: onlineU },
+        { label: 'Usuarios desconectados', value: offlineU },
       ]
+
      // let [btnHome, setBtnHome]:any = useState([{html: 'Ver perfil', href: '#'}]);
       const ShowGridLog = () => {
         setState({...state, 
@@ -155,7 +117,7 @@ const Home = () => {
                 <div className="grid grid-cols-1 gap-4 items-start lg:grid-cols-3 lg:gap-8">
                   {// Left column 
                   }
-                  <div className="grid grid-cols-1 gap-4 lg:col-span-2">
+                  <div className="grid grid-cols-1 gap-4 lg:col-span-2 h-full">
                     {// Welcome panel 
                     }
                     <section aria-labelledby="profile-overview-title">
@@ -209,8 +171,11 @@ const Home = () => {
     
                     {// Actions panel 
                     }
-                    <section aria-labelledby="quick-links-title">
-                      <div className="rounded-lg bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px">
+                    <section aria-labelledby="quick-links-title" style={{height}} >
+                    <div className="h-full rounded-lg bg-white shadow border-2 border-gray-200 border-dashed rounded-lg"  > 
+                      <Chatbox />
+                    </div>
+                      {/*<div className="rounded-lg bg-gray-200 overflow-hidden shadow divide-y divide-gray-200 sm:divide-y-0 sm:grid sm:grid-cols-2 sm:gap-px">
                         <h2 className="sr-only" id="quick-links-title">
                           Quick links
                         </h2>
@@ -265,7 +230,8 @@ const Home = () => {
                             </span>
                           </div>
                         ))}
-                      </div>
+                      </div>*/}
+
                     </section>
                   </div>
     
@@ -274,15 +240,16 @@ const Home = () => {
                   <div className="grid grid-cols-1 gap-4">
                     {// Announcements 
                     }
-                    <section aria-labelledby="announcements-title">
+                    <section aria-labelledby="announcements-title" style={{maxHeight: 700}} >
                       <div className="rounded-lg bg-white overflow-hidden shadow">
-                        <div className="p-6">
+                        <div className="p-2">
                           
-                          <div className="flow-root mt-6">
+                          <div className="flow-root">
                             {/* login */}  
                             
                             {!auth.logged&&logBand&&<Login />}
                             {!auth.logged&&!logBand&&<Signup />}
+                            {auth.logged&&<Feed />}
 
                           </div>
 
@@ -290,9 +257,7 @@ const Home = () => {
                       </div>
                     </section>
     
-                    {// Recent Hires 
-                    }
-                    <section aria-labelledby="recent-hires-title">
+                    {/*<section aria-labelledby="recent-hires-title">
                       <div className="rounded-lg bg-white overflow-hidden shadow">
                         <div className="p-6">
                           <h2 className="text-base font-medium text-gray-900" id="recent-hires-title">
@@ -300,7 +265,8 @@ const Home = () => {
                           </h2>
                           <div className="flow-root mt-6">
                             <ul role="list" className="-my-5 divide-y divide-gray-200">
-                              {recentHires.map((person) => (
+                              {
+                              recentHires.map((person) => (
                                 <li key={person.handle} className="py-4">
                                   <div className="flex items-center space-x-4">
                                     <div className="flex-shrink-0">
@@ -320,7 +286,8 @@ const Home = () => {
                                     </div>
                                   </div>
                                 </li>
-                              ))}
+                              ))
+                              }
                             </ul>
                           </div>
                           <div className="mt-6">
@@ -333,7 +300,8 @@ const Home = () => {
                           </div>
                         </div>
                       </div>
-                    </section>
+                    </section>*/}
+
                   </div>
                 </div>
               </div>

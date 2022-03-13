@@ -36,6 +36,7 @@ return (<>
         <Link href="/login" > </Link>
         <Link href="/signup" > </Link>
         <Link href="/perfil" > </Link>
+        <Link href="/chat" > </Link>
         {/*<ul>
             <li>
             <Link href="/">
@@ -60,7 +61,7 @@ return (<>
         </ul>*/}
     </header>
     {/*auth.logged&&<Chat/>*/}
-    <Home Children={MainHomen} />
+    <Home Children={MainHomen} link='Inicio' />
     </>
 );
 }

@@ -1,18 +1,11 @@
 import { Field, Int, ObjectType } from "type-graphql";
 import { BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany,getConnection, ObjectIdColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Mensaje } from "./Mensaje";
-
-export const getRepo = () => {
-  return getConnection('usersConn').getRepository(Usuario)
-}
-
 @ObjectType()
 @Index("Usuario_pkey", ["id"], { unique: true })
 @Entity("Usuario", { schema: "public" })
 export class Usuario extends BaseEntity {
   
-  
-
   @Field()
   //@ObjectIdColumn()//MONGO 
   @PrimaryGeneratedColumn() //OTHER DATAB

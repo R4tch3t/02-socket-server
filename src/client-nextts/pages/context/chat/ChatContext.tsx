@@ -10,7 +10,7 @@ const initialState={
     mensajes: [] //chat seleccionaado
 }
 
-const  ChatProvider = ({children}:any)=>{
+const ChatProvider = ({children}:any)=>{
     const [chatState, dispatch] = useReducer(chatReducer, initialState);
     return (
         <ChatContext.Provider value={{

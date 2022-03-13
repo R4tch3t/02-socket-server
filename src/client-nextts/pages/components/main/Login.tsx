@@ -13,7 +13,7 @@ const Login: NextPage = () => {
   const {login}:any = useAppContext()
   const [form, setForm] = useState({
     email:'test1@test.com',
-    password: '1234',
+    password: '12345',
     rememberme: false
   });
   const [modalE, setModalE] = useState(false);
@@ -85,7 +85,7 @@ const Login: NextPage = () => {
             txt={dataModal.txt} btnTxt={dataModal.btnTxt} />}
           
           {!auth.logged && <div className="min-h-full flex flex-col justify-center py-12 sm:px-22 lg:px-22">
-          <h2 className='rightH2' >ACCESO</h2>
+          <h2 className='rightH2' >Acceso</h2>
     
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
               <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">

@@ -7,10 +7,6 @@ import { Usuario } from "./Usuario";
 @Entity("Mensaje", { schema: "public" })
 export class Mensaje extends BaseEntity {
   
-  constructor(){
-    super()
-    getConnection('chatConn')
-  }
   @Field()
   //@Column("integer", { primary: true, name: "id" })
   //@PrimaryGeneratedColumn() OTHER DATABASE
@@ -30,13 +26,13 @@ export class Mensaje extends BaseEntity {
   @CreateDateColumn({ type: 'timestamp' })//MONGO
   time!: Date;
 
-  @Column('number',{name:'de',nullable: true})
+  @Column('string',{name:'de',nullable: true})
   @Field(()=>Usuario,{nullable: true})
   @ManyToOne(() => Usuario, (usuario) => usuario.msj_de)
   @JoinColumn([{ name: "de", referencedColumnName: "id" }])
   de!: Usuario;
 
-  @Column('number',{name:'para',nullable: true})
+  @Column('string',{name:'para',nullable: true})
   @Field(()=>Usuario,{nullable: true})
   @ManyToOne(() => Usuario, (usuario) => usuario.msj_para)
   @JoinColumn([{ name: "para", referencedColumnName: "id" }])

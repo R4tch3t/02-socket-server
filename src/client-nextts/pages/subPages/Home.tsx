@@ -13,7 +13,7 @@ import Logo from '../components/Logo'
 const user = {
   name: 'Chelsea Hagon',
   email: 'chelsea.hagon@example.com',
-  role: 'Human Resources Manager',
+  role: 'Alumno',
   imageUrl:
   "https://pm1.narvii.com/6442/ba5891720f46bc77825afc5c4dcbee06d3c66fe4_hq.jpg",
 }
@@ -23,18 +23,18 @@ function classNames(...classes:any) {
   return classes.filter(Boolean).join(' ')
 }
 
-export const Home = ({Children}:any) => {
+export const Home = ({Children, link}:any) => {
     const {auth,logout}:any = useAppContext();
     let userNavigation = [
-        { name: 'Ver perfil', href: '#' },
+        { name: 'Ver perfil', href: '/perfil' },
         { name: 'Configuración', href: '#' },
         { name: 'Cerrar sesión', href: '', onMouseUp: logout },
     ];
 
     let navigation = [
-        { name: 'Inicio', href: '/', current: true },
-        { name: 'Profile', href: '#', current: false },
-        { name: 'Resources', href: '#', current: false },
+        { name: 'Inicio', href: '/', current: link==="Inicio" },
+        { name: 'Perfil', href: '/perfil', current: link==="Perfil" },
+        { name: 'Chat en linea', href: '/chat', current: link==="Chat" },
         { name: 'Company Directory', href: '#', current: false },
         { name: 'Openings', href: '#', current: false },
     ];
@@ -47,12 +47,15 @@ export const Home = ({Children}:any) => {
         
         navigation = [
             { name: 'Inicio', href: '/', current: true },
-            { name: 'Profile', href: '#', current: false },
-            { name: 'Resources', href: '#', current: false },
-            { name: 'Company Directory', href: '#', current: false },
-            { name: 'Openings', href: '#', current: false },
+            { name: 'Ayuda', href: '#', current: false },
+            { name: 'Acerca de', href: '#', current: false },
+           // { name: 'Company Directory', href: '#', current: false },
+           // { name: 'Openings', href: '#', current: false },
         ];
         
+    }else{
+      user.name=auth.name
+      user.email=auth.email
     }
 
     return (
@@ -165,7 +168,7 @@ export const Home = ({Children}:any) => {
                                 <input
                                   id="search"
                                   className="block w-full text-white bg-white bg-opacity-20 py-2 pl-10 pr-3 border border-transparent rounded-md leading-5 focus:text-gray-900 placeholder-white focus:outline-none focus:bg-opacity-100 focus:border-transparent focus:placeholder-gray-500 focus:ring-0 sm:text-sm"
-                                  placeholder="Search"
+                                  placeholder="Buscar"
                                   type="search"
                                   name="search"
                                 />

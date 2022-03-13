@@ -1,5 +1,10 @@
-import { createConnections } from "typeorm";
+import { createConnections, getConnection } from "typeorm";
 import path from "path";
+
+export const getRepo = (con:any,repo:any) => {
+    return getConnection(con).getRepository(repo);
+}
+
 export async function connect(){
 
     // await createConnection({

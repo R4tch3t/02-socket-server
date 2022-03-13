@@ -59,6 +59,7 @@ export const Feed: NextPage = () => {
     if(chatState.usuarios.length>0){
         return (
             <div  >
+                <h2 className='rightH2' >Lista de usuarios</h2>
             <ul role="list" className="divide-y divide-gray-200">
                 {chatState.usuarios
                 .filter((user:any)=>user.id!==auth.id)
