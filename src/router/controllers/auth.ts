@@ -8,7 +8,7 @@ import { getRepo } from "../../config/typeorm";
 const crearUsuario = async (req=request, res=response)=>{
     try{
 
-        const userRepo:any = getRepo('usersConn','Usuario');
+        const userRepo:any = getRepo('usersConn','Usuarios');
         const {email, password} = req.body
         const existeEmail = await userRepo.findOne({email});
         
@@ -49,7 +49,7 @@ const crearUsuario = async (req=request, res=response)=>{
 const login = async (req=request, res=response)=>{
     
     try{
-        const userRepo:any = getRepo('usersConn','Usuario');
+        const userRepo:any = getRepo('usersConn','Usuarios');
         const {email, password} = req.body
         const usuario = await userRepo.findOne({email});
         
@@ -89,7 +89,7 @@ const login = async (req=request, res=response)=>{
 }
 
 const renew = async (req=request, res=response)=>{
-    const userRepo:any = getRepo('usersConn','Usuario');
+    const userRepo:any = getRepo('usersConn','Usuarios');
     const {id, uuid}:any = req;
 
     //generar nuevo JWT
@@ -109,7 +109,7 @@ const renew = async (req=request, res=response)=>{
 
 const updateUser = async (req=request, res=response)=>{
     try{
-        const userRepo:any = getRepo('usersConn','Usuario');
+        const userRepo:any = getRepo('usersConn','Usuarios');
         const {id, uuid, nombre, email, newEmail} = req.body.user
         
         let usuario:any = await userRepo.findOne({email: newEmail});
@@ -158,7 +158,7 @@ const updateUser = async (req=request, res=response)=>{
 
 const updateUserPass = async (req=request, res=response)=>{
     try{
-        const userRepo:any = getRepo('usersConn','Usuario');
+        const userRepo:any = getRepo('usersConn','Usuarios');
         const {id, uuid, email, password, newPass} = req.body.user
         
         let usuario = await userRepo.findOne({email});

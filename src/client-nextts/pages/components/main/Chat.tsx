@@ -80,7 +80,7 @@ const Home = () => {
       });
       const offlineU=listaU-onlineU
       const stats = [
-        { label: 'Usuarios en lista', value: listaU },
+        { label: (listaU===1?'Usuario':'Usuarios')+' en lista', value: listaU },
         { label: (onlineU === 1? 'Usuario conectado' : 'Usuarios conectados'), value: onlineU },
         { label: (offlineU === 1? 'Usuario desconectado':'Usuarios desconectados'), value: offlineU },
       ]

@@ -13,9 +13,10 @@ const validarJWT = (req:any, res:any, next:any) => {
         }
 
         const {id,uuid}:any = jwt.verify(token,process.env.JWT_SECRET!)
+        
         req.id=id
         req.uuid=uuid
-        
+        console.log('vJWT??? '+req.id)
 
         next();
     }catch(e){

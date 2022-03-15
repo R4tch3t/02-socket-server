@@ -1,6 +1,6 @@
 import { Field, Int, ObjectType } from "type-graphql";
 import { BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ObjectIdColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Mensaje } from "./Mensaje";
+import { Mensajes } from "./Mensajes";
 
 @ObjectType()
 @Index("Usuario_pkey", ["id"], { unique: true })
@@ -9,7 +9,7 @@ export class Usuario extends BaseEntity {
  
   @Field()
   @ObjectIdColumn()//MONGO 
-  //@PrimaryGeneratedColumn() //OTHER DATAB
+  //@PrimaryGeneratedColumn() //sql DATAB
   id!: number;
 
   @Field(() => String)
@@ -32,17 +32,17 @@ export class Usuario extends BaseEntity {
   @Column("boolean", { name: "online", nullable: true, default: () => "false" })
   online!: boolean | null;
 
-  @Field(()=>[Mensaje],{nullable: true})
-  @OneToMany(() => Mensaje, (mensaje) => mensaje.de)
-  msj_de!: Mensaje[];
+  @Field(()=>[Mensajes],{nullable: true})
+  @OneToMany(() => Mensajes, (mensaje) => mensaje.de)
+  msj_de!: Mensajes[];
 
-  @Field(()=>[Mensaje],{nullable: true})
-  @OneToMany(() => Mensaje, (mensaje) => mensaje.para)
-  msj_para!: Mensaje[];
+  @Field(()=>[Mensajes],{nullable: true})
+  @OneToMany(() => Mensajes, (mensaje) => mensaje.para)
+  msj_para!: Mensajes[];
 
-  @Field(()=>[Mensaje],{nullable: true})
-  @ManyToMany(() => Mensaje, (mensaje) => mensaje.paras)
+  @Field(()=>[Mensajes],{nullable: true})
+  @ManyToMany(() => Mensajes, (mensaje) => mensaje.paras)
   //@JoinColumn([{ name: "msj_para", referencedColumnName: "para" }])
   //@JoinTable()
-  msj_paras!: Mensaje[];
+  msj_paras!: Mensajes[];
 }

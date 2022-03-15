@@ -34,6 +34,13 @@ a {
   cursor: pointer;
 }
 
+.selected-feed{
+  background-color:aliceblue;
+  color: #0070f3;
+  border-color: #0070f3;
+  cursor: pointer;
+}
+
 .chatBoxMain{
   display: flex;
   flex-direction: column;

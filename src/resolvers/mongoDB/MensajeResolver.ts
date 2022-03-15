@@ -2,7 +2,7 @@ import { DocumentNode } from "graphql";
 import {Resolver, Query, Mutation, Arg, Field, InputType, Int } from "type-graphql";
 import { Column } from "typeorm";
 import { gql } from "urql";
-import { Mensaje } from "../../entities/mongoDB/Mensaje";
+import { Mensajes } from "../../entities/mongoDB/Mensajes";
 import { Usuario } from "../../entities/mongoDB/Usuario";
 
 
@@ -99,14 +99,14 @@ export class MensajeResolver {
         })
     });
 
-    @Mutation(()=> Mensaje)
+    @Mutation(()=> Mensajes)
     async createMensaje(
         @Arg("msjInput", () => MensajeInput) msjInput: MensajeInput,
         @Arg("de", () => de_user) de: de_user,
         @Arg("para", () => para_user) para: para_user
     ){
         //const newMensaje = Mensaje.create(msjInput);
-        const newMensaje = Mensaje.create(msjInput);
+        const newMensaje = Mensajes.create(msjInput);
         //newMensaje.para=[]
         let de_user = await Usuario.findOne({where:{id: de.email}})
         let para_user = await Usuario.findOne({where:{id: para.email}})
@@ -136,7 +136,7 @@ export class MensajeResolver {
 
     @Mutation(()=>Boolean)
     async deleteMensaje(@Arg("id", () => Int) id: number){
-        await Mensaje.delete(id)
+        await Mensajes.delete(id)
         return true
     }
 
@@ -145,19 +145,19 @@ export class MensajeResolver {
         @Arg("id",()=>Int) id: number,
         @Arg("fields",()=>MensajeUpdateInput) fields: MensajeUpdateInput
     ){
-        await Mensaje.update({id}, fields)
+        await Mensajes.update({id}, fields)
         return true
     }
     
 
-    @Query(()=>[Mensaje])
+    @Query(()=>[Mensajes])
     mensajes(
         @Arg("deId",()=>Int) deId: number,
         @Arg("deUuid",()=>String) deUuid: string,
         @Arg("paraId",()=>Int) paraId: number,
         @Arg("paraUuid",()=>String) paraUuid: string,
     ){
-        return Mensaje.find({ 
+        return Mensajes.find({ 
             where: [{de: deId, para: paraId } , {de: paraId, para: deId}],
             relations: ["de","para"],
             order: {

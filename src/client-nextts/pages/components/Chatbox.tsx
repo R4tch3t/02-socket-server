@@ -16,6 +16,8 @@ import { useChatContext } from '../context/chat/ChatContext'
 import Warning from './Warning'
 import { useAppContext } from '../auth/authContext'
 import { useSocketContext } from '../context/SocketContext'
+import Info from './Info'
+import { fetchConToken } from '../helpers/fetch'
 //import { io, Socket } from "socket.io-client";
 const moods = [
     { name: 'Excited', value: 'excited', icon: FireIcon, iconColor: 'text-white', bgColor: 'bg-red-500' },
@@ -51,6 +53,7 @@ const onSubmit=(e:any)=>{
   {
     de:auth.id,
     para:chatState.chatActivo.id,
+    readed: false,
     mensaje
   });
 
@@ -64,14 +67,11 @@ const onSubmit=(e:any)=>{
     listmsj.innerHTML += `<li>${data.msj}</li>`
 });*/
 
-const handleSend = () => {
-    //socket.emit("hello");
-    /*let name: any = document.getElementById("name");
-    let msj: any = document.getElementById("msj");
-    name=name.value;
-    msj = msj.value;
-    console.log(msj);
-    socket.emit("msjtoserver",{name,msj})*/
+const handleReaded = async() => {
+  const resp = await fetchConToken(`mensajes/upRead`,{},'POST');  
+  if(resp){
+    socket.emit("getUsuarios");
+  }
 }
 
 console.log(chatState.mensajes)
@@ -79,12 +79,12 @@ console.log(chatState.mensajes)
 if(!chatActivo.id){
   return(
     <div className='h-full wMid' >
-      <Warning msg={"Seleciona un contacto en la barra laretal derecha para iniciar una conversación."} />
+      <Info msg={"Seleciona un contacto en la barra laretal derecha para iniciar una conversación."} />
     </div>
   );
 }else{
   return (<>
-    <div className='h-full chatBoxMain'  >
+    <div className='h-full chatBoxMain' onMouseUp={handleReaded} >
       {/*<div className='w-full h-full .chatMsg chatFlow ' >*/}
       <div id='chatBox' className='h-full w-full chatBox mainFlow'  >
         {chatState.mensajes.map((msj:any,i:any)=>{
@@ -111,14 +111,14 @@ if(!chatActivo.id){
         <div className="relative" >
           <div className="border border-gray-300 rounded-lg shadow-sm overflow-hidden focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
             <label htmlFor="msj" className="sr-only">
-              Enviar mensaje...
+              Escribir mensaje...
             </label>
             <textarea
               rows={3}
               name="msj"
               id="msj"
               className="block w-full py-3 border-0 resize-none focus:ring-0 sm:text-sm"
-              placeholder="Enviar mensaje..."
+              placeholder="Escribir mensaje..."
               value={mensaje}
               onChange={onChange}
             />

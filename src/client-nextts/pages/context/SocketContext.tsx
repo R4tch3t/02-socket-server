@@ -12,7 +12,7 @@ const SocketContext = createContext({});
 const SocketProvider = ({ children }:any) => {
 
     const { socket, online, conectarSocket, desconectarSocket } = useSocket('http://localhost:3000');
-    const {auth}:any = useAppContext();
+    const {auth,logout}:any = useAppContext();
     const {dispatch}:any = useChatContext();
 
     useEffect(()=>{
@@ -39,12 +39,20 @@ const SocketProvider = ({ children }:any) => {
     },[socket,dispatch]);
 
     useEffect(()=>{
+        socket?.on("logout",()=>{
+            logout()
+        })
+    },[socket,logout]);
+
+    useEffect(()=>{
         socket?.on('mensaje-personal',(mensaje:any)=>{
             dispatch({
                 type: types.nuevoMensaje,
                 payload: mensaje
             });
-            scrollToBottomAnimated('chatBox');
+            //if(chatState.chatActivo.id){
+                scrollToBottomAnimated('chatBox');
+            //}
         });
     },[socket,dispatch])
 

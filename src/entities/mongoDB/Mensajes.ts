@@ -3,13 +3,13 @@ import { BaseEntity, Column, CreateDateColumn, Entity, Index, JoinColumn, JoinTa
 import { Usuario } from "./Usuario";
 
 @ObjectType()
-@Index("Mensaje_pkey", ["id"], { unique: true })
-@Entity("Mensaje", { schema: "public" })
-export class Mensaje extends BaseEntity {
+@Index("Mensajes_pkey", ["id"], { unique: true })
+@Entity("Mensajes", { schema: "public" })
+export class Mensajes extends BaseEntity {
   
   @Field()
   //@Column("integer", { primary: true, name: "id" })
-  //@PrimaryGeneratedColumn() OTHER DATABASE
+  //@PrimaryGeneratedColumn() sql DATABASE
   @ObjectIdColumn() //MONGO
   id!: number;
 
@@ -25,6 +25,10 @@ export class Mensaje extends BaseEntity {
   })
   @CreateDateColumn({ type: 'timestamp' })//MONGO
   time!: Date;
+
+  @Field(() => Boolean)
+  @Column("boolean", { name: "readed", nullable: true, default: () => "false" })
+  readed!: boolean;
 
   @Column('string',{name:'de',nullable: true})
   @Field(()=>Usuario,{nullable: true})

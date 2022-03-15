@@ -8,6 +8,7 @@ const ioOnConnection = (io:Server) => {
         const [valido,ids]:any = comprobarJWT(token);
         if(!valido){
             console.log("Socket no identificado");
+            socket.emit('logout');
             return socket.disconnect();
         }
 
@@ -16,7 +17,13 @@ const ioOnConnection = (io:Server) => {
         console.log(ids.id)
         socket.join(ids.id);
         //obtener usuarios
-        io.emit("getUsuarios",await getUsuarios());
+        io.emit("getUsuarios",await getUsuarios(ids));
+
+        
+        socket.on("getUsuarios",async()=>{
+            socket.emit("getUsuarios",await getUsuarios(ids));
+        });
+        
 
         //console.log("Cliente conectado!", ids)
         //console.log(token)
@@ -25,6 +32,7 @@ const ioOnConnection = (io:Server) => {
             const mensaje = await grabarMensaje(payload);
             io.to(payload.para).emit('mensaje-personal',mensaje);
             io.to(payload.de).emit('mensaje-personal',mensaje);
+            io.to(payload.para).emit("getUsuarios",await getUsuarios({id: payload.para, uuid: payload.uuid}));
         });
         
         /*socket.on("hello", () => {
@@ -41,7 +49,7 @@ const ioOnConnection = (io:Server) => {
         });*/
         socket.on("disconnect",async ()=>{
             await usuarioDesconectado(ids);
-            io.emit("getUsuarios",await getUsuarios());
+            io.emit("getUsuarios",await getUsuarios(ids));
             //socket.disconnect();
            // console.log("Cliente desconectado",ids);
         })

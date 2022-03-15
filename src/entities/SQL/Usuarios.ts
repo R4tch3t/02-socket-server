@@ -1,14 +1,14 @@
 import { Field, Int, ObjectType } from "type-graphql";
 import { BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany,getConnection, ObjectIdColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Mensaje } from "./Mensaje";
+//import { Mensaje } from "./Mensaje";
 @ObjectType()
-@Index("Usuario_pkey", ["id"], { unique: true })
-@Entity("Usuario", { schema: "public" })
-export class Usuario extends BaseEntity {
+@Index("Usuarios_pkey", ["id"], { unique: true })
+@Entity("Usuarios", { schema: "public" })
+export class Usuarios extends BaseEntity {
   
   @Field()
   //@ObjectIdColumn()//MONGO 
-  @PrimaryGeneratedColumn() //OTHER DATAB
+  @PrimaryGeneratedColumn() //SQL DATAB
   id!: number;
 
   @Field(() => String)
@@ -31,7 +31,15 @@ export class Usuario extends BaseEntity {
   @Column("boolean", { name: "online", nullable: true, default: () => "false" })
   online!: boolean | null;
 
-  @Field(()=>[Mensaje],{nullable: true})
+  @Field(()=> String)
+  @Column("timestamp without time zone", {
+    name: "lastConn",
+    nullable: true,
+    default: () => "now()",
+  })
+  lastConn!: Date;
+
+  /*@Field(()=>[Mensaje],{nullable: true})
   @OneToMany(() => Mensaje, (mensaje) => mensaje.de)
   msj_de!: Mensaje[];
 
@@ -43,5 +51,5 @@ export class Usuario extends BaseEntity {
   @ManyToMany(() => Mensaje, (mensaje) => mensaje.paras)
   //@JoinColumn([{ name: "msj_para", referencedColumnName: "para" }])
   //@JoinTable()
-  msj_paras!: Mensaje[];
+  msj_paras!: Mensaje[];*/
 }

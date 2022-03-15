@@ -44,7 +44,7 @@ export async function connect(){
             database: 'chatApp',
             entities: [
                 path.join(__dirname,'../entity/**/**.ts'),
-                path.join(__dirname,'../entities/postgres/**/**.ts')
+                path.join(__dirname,'../entities/SQL/**/**.ts')
             ],
             synchronize: true
         }
