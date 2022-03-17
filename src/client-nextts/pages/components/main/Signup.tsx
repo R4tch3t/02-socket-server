@@ -12,7 +12,7 @@ const Signup: NextPage = () => {
     const [dataModal, setDataModal] = useState({title: '', txt:'', btnTxt:''})
     const {signup}:any = useAppContext()
     const [form, setForm] = useState({
-        nombre:'nombre',
+        matricula:'08083206',
         email:'test@test.com',
         password: '1234'
     });
@@ -47,7 +47,7 @@ const Signup: NextPage = () => {
             console.log(v)
         });*/
         
-        const ok = await signup(form.nombre,form.email,form.password);
+        const ok = await signup(form);
 
         if(ok!==true){
             //sE=["Verificar usuario y/o contraseña"]
@@ -73,7 +73,7 @@ const Signup: NextPage = () => {
     }
 
     const todoOk = () => {
-        return (form.nombre.length>0&&
+        return (form.matricula.length>0&&
                 form.email.length>0&&
                 form.password.length>0)
                 ?true:false
@@ -110,7 +110,7 @@ const Signup: NextPage = () => {
                         id="nombre"
                         name="nombre"
                         type="text"
-                        value={form.nombre}
+                        value={form.matricula}
                         onChange={onChange}
                         required
                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"

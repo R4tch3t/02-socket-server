@@ -76,14 +76,11 @@ const setReaded = (mensajes:any) => new Promise((resolve,reject)=>{
 });
 
 const upRead=async(req:any, res:any)=>{
-    let {id} = req
-    id=parseInt(id);
+    const para = parseInt(req.id)
     const chatRepo:any = getRepo('chatConn','Mensajes');
     const unread:any = await chatRepo.find({
-        //de: { $type: 16 },
-        //para: { $type: 16 }, //innecesary in these case, but is util
         where: {            
-            para: id, readed: false
+            para, readed: false
         },
         order: {
             //id: "ASC",

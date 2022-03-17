@@ -34,6 +34,14 @@ const ioOnConnection = (io:Server) => {
             io.to(payload.de).emit('mensaje-personal',mensaje);
             io.to(payload.para).emit("getUsuarios",await getUsuarios({id: payload.para, uuid: payload.uuid}));
         });
+
+        socket.on('writingDown', async(payload)=>{
+            io.to(payload.para).emit('writingDown',payload);
+        });
+
+        socket.on('writingUp', async(payload)=>{
+            io.to(payload.para).emit('writingUp',payload);
+        });
         
         /*socket.on("hello", () => {
             console.log("Say event On Hello")

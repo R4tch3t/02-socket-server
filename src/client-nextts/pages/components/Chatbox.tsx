@@ -13,7 +13,7 @@ import { Listbox, Transition } from '@headlessui/react'
 import {MensajeDe} from './MensajeDe'
 import {MensajePara} from './MensajePara'
 import { useChatContext } from '../context/chat/ChatContext'
-import Warning from './Warning'
+//import debounce from 'lodash.debounce';
 import { useAppContext } from '../auth/authContext'
 import { useSocketContext } from '../context/SocketContext'
 import Info from './Info'
@@ -31,7 +31,9 @@ const moods = [
 function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(' ')
 }
+
 const Chatbox: NextPage = () => {
+let bandChange = false
 const {chatState}:any = useChatContext();
 const {chatActivo} = chatState;
 const [selected, setSelected] = useState(moods[5]);
@@ -41,8 +43,37 @@ const {auth}:any = useAppContext();
 //const {chatState}:any = useChatContext();
 
 const onChange = ({target}:any) => {
+  bandChange=true
+  keyDown()
   const {value}:any = target;
   setMensaje(value);
+  setTimeout(changeBand,500);
+}
+
+const changeBand = () => {
+  bandChange=false
+    setTimeout(keyUp,500);
+}
+
+const keyUp = () => {
+  if(bandChange) return;
+  socket.emit('writingUp',
+  {
+    de:auth.id,
+    para:chatState.chatActivo.id,
+    usuarios: chatState.usuarios
+  }
+  );
+}
+
+const keyDown = () => {
+  socket.emit('writingDown',
+  {
+    de:auth.id,
+    para:chatState.chatActivo.id,
+    usuarios: chatState.usuarios
+  }
+  );
 }
 
 const onSubmit=(e:any)=>{
@@ -73,8 +104,6 @@ const handleReaded = async() => {
     socket.emit("getUsuarios");
   }
 }
-
-console.log(chatState.mensajes)
 
 if(!chatActivo.id){
   return(
@@ -121,6 +150,9 @@ if(!chatActivo.id){
               placeholder="Escribir mensaje..."
               value={mensaje}
               onChange={onChange}
+              
+              onEnded={()=>{console.log('Enden Capture?')}}
+              
             />
 
             {/* Spacer element to match the height of the toolbar */}

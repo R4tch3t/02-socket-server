@@ -36,6 +36,19 @@ export async function connect(){
         },
         {
             name: "usersConn",
+            type: 'oracle',
+            host: 'localhost',
+            port: 1521,
+            username: 'XE',
+            password: 'oracle',
+            database: 'XE',
+            entities: [
+                path.join(__dirname,'../entities/oracle/**/**.ts')
+            ],
+            synchronize: false
+        },
+        {
+            name: "usersConnP",
             type: 'postgres',
             host: 'localhost',
             port: 5432,
@@ -44,7 +57,7 @@ export async function connect(){
             database: 'chatApp',
             entities: [
                 path.join(__dirname,'../entity/**/**.ts'),
-                path.join(__dirname,'../entities/SQL/**/**.ts')
+                path.join(__dirname,'../entities/postgres/**/**.ts')
             ],
             synchronize: true
         }

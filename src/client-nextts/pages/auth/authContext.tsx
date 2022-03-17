@@ -36,8 +36,9 @@ const initialState:any = {
         return resp.ok
     }
 
-    const signup = async (nombre:any, email:any, password:any) => {
-        const resp = await fetchSinToken("login/new",{nombre,email,password},"POST");
+    const signup = async (user:any) => {
+        const {nombre, matricula, email, password}:any = user
+        const resp = await fetchSinToken("login/new",{matricula,email,password},"POST");
         console.log("registerProv");
         console.log(resp);
         if(resp.ok){

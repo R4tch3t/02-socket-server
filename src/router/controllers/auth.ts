@@ -4,15 +4,16 @@ import {randomUUID} from "crypto"
 import bcrypt from "bcryptjs"
 import {generarJWT} from "../helpers/jwt"
 import { getRepo } from "../../config/typeorm";
-
+//import { UsersChat } from "../../entities/oracle/UsersChat";
 const crearUsuario = async (req=request, res=response)=>{
     try{
 
-        const userRepo:any = getRepo('usersConn','Usuarios');
+        const userRepo:any = getRepo('usersConn',"UsersChat");
         const {email, password} = req.body
-        const existeEmail = await userRepo.findOne({email});
+        const existeEmail = await userRepo.find({email});
+        console.log(existeEmail)
         
-        if(existeEmail){
+        if(existeEmail&&existeEmail.length>0){
             return res.status(400).json({
                 ok: false,
                 msg:"El correo ya existe"
@@ -22,6 +23,10 @@ const crearUsuario = async (req=request, res=response)=>{
         const usuario: any = userRepo.create(req.body)
         const salt = bcrypt.genSaltSync();
 
+        //gen next id
+        //usuario.manager=userRepo.manager
+        await usuario.beforeInsert(userRepo.manager)
+        
         //gen uuid and password encrypt
         usuario.uuid=randomUUID();
         usuario.password=bcrypt.hashSync(password,salt);

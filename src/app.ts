@@ -90,6 +90,7 @@ export async function startServer(){
       httpServer.listen({ port: config.port }, resolve)
     );
     
+    
     console.log(
       '🚀 Server ready at',
       `http${config.ssl ? 's' : ''}://${config.hostname}:${config.port}${

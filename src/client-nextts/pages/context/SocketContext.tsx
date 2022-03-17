@@ -5,6 +5,7 @@ import { useAppContext } from '../auth/authContext';
 import { useChatContext } from './chat/ChatContext';
 import {types} from '../types/types';
 import {scrollToBottomAnimated} from '../helpers/scrollToBottom';
+import writingState from '../helpers/writingState';
 
 const SocketContext = createContext({});
 
@@ -50,10 +51,40 @@ const SocketProvider = ({ children }:any) => {
                 type: types.nuevoMensaje,
                 payload: mensaje
             });
-            //if(chatState.chatActivo.id){
                 scrollToBottomAnimated('chatBox');
-            //}
         });
+    },[socket,dispatch])
+
+    useEffect(()=>{
+        
+        socket?.on('writingDown',(payload:any)=>{
+            
+            let {usuarios} = payload;
+            usuarios = writingState(usuarios,payload.de,true);
+            console.log("writingDown")
+            console.log(usuarios)
+            dispatch({
+                type: types.usuariosCargados,
+                payload: usuarios
+            });
+                //scrollToBottomAnimated('chatBox');
+        });
+
+    },[socket,dispatch])
+
+    useEffect(()=>{
+        
+        socket?.on('writingUp',(payload:any)=>{
+            
+            let {usuarios} = payload;
+            usuarios = writingState(usuarios,payload.de,false);
+            dispatch({
+                type: types.usuariosCargados,
+                payload: usuarios
+            });
+                //scrollToBottomAnimated('chatBox');
+        });
+        
     },[socket,dispatch])
 
     return (

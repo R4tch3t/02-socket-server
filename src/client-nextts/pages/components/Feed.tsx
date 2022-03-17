@@ -98,13 +98,18 @@ export const Feed: NextPage = () => {
                                 <p className="text-sm text-gray-500">{diffDate(user.lastConn,new Date())}</p>
                             </>}
                         </div>
-                        {user.lastMsg && user.lastMsg.para === auth.id && <p className="text-sm text-gray-500">
+                        {user.lastMsg && user.lastMsg.para === auth.id && <p className="text-sm text-blue-500">
                         {/*Deployed {activityItem.project} ({activityItem.commit} in master) to {activityItem.environment}*/}
                         {user.lastMsg.mensaje}
                             <span className="absolute bottom-0 right-0 block h-3 w-3 rounded-full ring-2 ring-white bg-blue-400" />
                         </p>
                         }
-                        {(!user.lastMsg || (user.lastMsg && user.lastMsg.para !== auth.id))&&<br/>}
+                        {(!user.lastMsg && !user.writing || (user.lastMsg && user.lastMsg.para !== auth.id))&&<br/>}
+                        {user.writing &&
+                        <p className="text-sm text-green-500">
+                            escribiendo...
+                        </p>
+                        }
                     </div>
                     </div>
                     
