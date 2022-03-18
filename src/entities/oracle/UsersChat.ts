@@ -31,6 +31,10 @@ export class UsersChat extends BaseEntity {
   @Column("number", { name: "ONLINE", precision: 1, scale: 0, nullable: true, default: () => "0" })
   online!: number;
 
+  @Field(() => Int)
+  @Column("number", { name: "ACTIVATED", precision: 1, scale: 0, nullable: true, default: () => "0" })
+  activated!: number;
+
   @Field(()=> String)
   @Column("timestamp", {
     name: "LASTCONN",
@@ -56,7 +60,6 @@ export class UsersChat extends BaseEntity {
   msj_paras!: Mensaje[];*/
   //@BeforeInsert()
   async beforeInsert(manager:EntityManager): Promise<void>{
-    
     const res = await manager.query("select XE.USERS_CHAT_SEQ.nextval ID from dual");
     //const res = await manager.query("select XE.USERS_CHAT_SEQ.nextval ID from dual");
     //if(res&&res.length>0){

@@ -17,7 +17,8 @@ const generarJWT = (id:any,uuid:any) => {
 const comprobarJWT = (token="")=>{
     try{
         const {id, uuid}:any = jwt.verify(token,process.env.JWT_SECRET!);
-        return [true, {id,uuid}];
+        //TODO comprobar si cuenta es activada o no
+        return [true, false, {id,uuid}];
     }catch(e){
         return [false,e];
     }

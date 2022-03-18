@@ -1,5 +1,5 @@
 
-import { Component, Fragment } from 'react'
+import { Component, Fragment, useState } from 'react'
 import { Menu, Popover, Transition } from '@headlessui/react'
 import {
   BellIcon,
@@ -9,6 +9,7 @@ import {
 import { SearchIcon } from '@heroicons/react/solid'
 import { useAppContext } from '../auth/authContext'
 import Logo from '../components/Logo'
+import { ModalError } from '../components/ModalError'
 
 const user = {
   name: 'Chelsea Hagon',
@@ -30,7 +31,7 @@ export const Home = ({Children, link}:any) => {
         { name: 'Configuración', href: '#' },
         { name: 'Cerrar sesión', href: '', onMouseUp: logout },
     ];
-
+    const [dataModal, setDataModal] = useState({title: 'Error', txt:'La cuenta no está activada, favor de verificar su correo y activarla.', btnTxt:'Salir'})
     let navigation = [
         { name: 'Inicio', href: '/', current: link==="Inicio" },
         { name: 'Perfil', href: '/perfil', current: link==="Perfil" },
@@ -68,6 +69,8 @@ export const Home = ({Children, link}:any) => {
             <body class="h-full">
             ```
           */}
+          {!auth.activated && <ModalError open={!auth.activated} setOpen={()=>{logout()}} title={dataModal.title} 
+          txt={dataModal.txt} btnTxt={dataModal.btnTxt} />}
           <div className="min-h-full">
             <Popover as="header" className="pb-24 bg-gradient-to-r from-sky-800 to-cyan-600">
               {({ open }) => (

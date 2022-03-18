@@ -11,15 +11,12 @@ import {Server} from 'socket.io';
 import routerAuth from './router/auth';
 import routerMsj from './router/mensajes';
 import { ioOnConnection } from './socket/events';
+import {configurations} from './variables/host'
 
 export async function startServer(){
     const app = express();
-    const router = require("./router/auth")
     const schema = await schemas();
-    const configurations: {[index: string]:any} = {
-      production: { ssl: true, port: 443, hostname: 'localhost' },
-      development: { ssl: false, port: 3000, hostname: 'localhost' },
-    }; 
+    
     const environment = process.env.NODE_ENV || 'development';
     const config = configurations[environment];
 

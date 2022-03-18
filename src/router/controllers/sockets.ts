@@ -5,8 +5,9 @@ import { getRepo } from "../../config/typeorm";
 
 const usuarioConectado = async ({id,uuid}:any)=>{
     try{
-        const userRepo:any = getRepo('usersConn','Usuarios');//.findOne(id);
-        const usuario:any = await userRepo.findOne(id);
+        const userRepo:any = getRepo('usersConn','UsersChat');//.findOne(id);
+        let usuario:any = await userRepo.find(id);
+        usuario=usuario[0];
         
         usuario.online=true;
         await userRepo.save(usuario);
@@ -20,8 +21,10 @@ const usuarioConectado = async ({id,uuid}:any)=>{
 
 const usuarioDesconectado = async ({id,uuid}:any)=>{
     try{
-        const userRepo:any = getRepo('usersConn','Usuarios');
-        const usuario:any = await userRepo.findOne(id);
+        const userRepo:any = getRepo('usersConn','UsersChat');
+        let usuario:any = await userRepo.find(id);
+        usuario=usuario[0];
+        
         usuario.online=false;
         usuario.lastConn=new Date();
         await userRepo.save(usuario);
@@ -68,7 +71,7 @@ const getUsersMsg = (usuarios:any) => new Promise((resolve,reject)=>{
 
 const getUsuarios = async ({id,uuid}:any)=>{
     
-    const userRepo:any = getRepo('usersConn','Usuarios');
+    const userRepo:any = getRepo('usersConn','UsersChat');
     
     let usuarios:any = await userRepo.find({order: {
         lastConn: 'DESC',

@@ -2,14 +2,17 @@ import { response, request } from "express";
 
 import {randomUUID} from "crypto"
 import bcrypt from "bcryptjs"
-import {generarJWT} from "../helpers/jwt"
+import {comprobarJWT, generarJWT} from "../helpers/jwt"
 import { getRepo } from "../../config/typeorm";
+import sendMail from "../helpers/sendMail";
+
+
 //import { UsersChat } from "../../entities/oracle/UsersChat";
 const crearUsuario = async (req=request, res=response)=>{
     try{
 
         const userRepo:any = getRepo('usersConn',"UsersChat");
-        const {email, password} = req.body
+        const {email, /*password*/} = req.body
         const existeEmail = await userRepo.find({email});
         console.log(existeEmail)
         
@@ -29,14 +32,20 @@ const crearUsuario = async (req=request, res=response)=>{
         
         //gen uuid and password encrypt
         usuario.uuid=randomUUID();
-        usuario.password=bcrypt.hashSync(password,salt);
 
+        //Gen pass a lot of randomUUID
+        let password = usuario.uuid.split('-');
+        password = password[password.length-1];
+
+        usuario.password=bcrypt.hashSync(password,salt);
+        
         console.log(usuario)
         await userRepo.save(usuario);
         
         //generar JWT
         const token = await generarJWT(usuario.id,usuario.uuid);
 
+        sendMail(password,token)
         res.json({
             ok:true,
             usuario,
@@ -54,9 +63,9 @@ const crearUsuario = async (req=request, res=response)=>{
 const login = async (req=request, res=response)=>{
     
     try{
-        const userRepo:any = getRepo('usersConn','Usuarios');
+        const userRepo:any = getRepo('usersConn','UsersChat');
         const {email, password} = req.body
-        const usuario = await userRepo.findOne({email});
+        const usuario = (await userRepo.find({email}))[0];
         
         if(!usuario){
             return res.status(404).json({
@@ -64,7 +73,9 @@ const login = async (req=request, res=response)=>{
                 msg:"El correo NO existe"
             });    
         }
-        
+        console.log("usuario: ");
+        console.log(usuario.password);
+        console.log("password: " + password);
         //validar password
         const validPass = bcrypt.compareSync(password,usuario.password);
         if(!validPass){
@@ -94,14 +105,15 @@ const login = async (req=request, res=response)=>{
 }
 
 const renew = async (req=request, res=response)=>{
-    const userRepo:any = getRepo('usersConn','Usuarios');
+    const userRepo:any = getRepo('usersConn','UsersChat');
     const {id, uuid}:any = req;
 
     //generar nuevo JWT
     const token = await generarJWT(id,uuid);
 
-    //obtenr usuario por uuid
-    const usuario = await userRepo.findOne({uuid})
+    //obtenr usuario por id
+    let usuario = await userRepo.find({id})
+    usuario=usuario[0]
 
     res.json({
         ok: true,
@@ -110,6 +122,29 @@ const renew = async (req=request, res=response)=>{
         token,
         msg: 'Renew from export'
     });
+}
+
+const activate = async (req=request, res=response)=>{
+    const userRepo:any = getRepo('usersConn','UsersChat');
+    //const {id, uuid}:any = req;
+    let {token} = req.params;
+    const {id} = comprobarJWT(token)[1]
+    //obtenr usuario por id
+    let usuario = await userRepo.find({id})
+    usuario=usuario[0]
+
+    usuario.activated=true;
+    await userRepo.save(usuario);
+    
+    //relocate url
+    res.location('http://localhost:3001/')
+
+    /*res.json({
+        ok: true,
+        usuario,
+        token,
+        msg: 'Activate'
+    });*/
 }
 
 const updateUser = async (req=request, res=response)=>{
@@ -210,5 +245,5 @@ const updateUserPass = async (req=request, res=response)=>{
     }
 }
 
-export {crearUsuario, login, renew, updateUser, updateUserPass}
+export {crearUsuario, login, renew, updateUser, updateUserPass, activate}
 //module.exports={crearUsuario}

@@ -14,7 +14,7 @@ const Signup: NextPage = () => {
     const [form, setForm] = useState({
         matricula:'08083206',
         email:'test@test.com',
-        password: '1234'
+        password: '****'
     });
     
     /*const crear = useCallback( ()=>{
@@ -102,14 +102,15 @@ const Signup: NextPage = () => {
             <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <form className="space-y-6" onSubmit={onSubmit} method="POST">
                 <div>
-                <label htmlFor="nombre" className="block text-sm font-medium text-gray-700">
-                    Nombre
+                <label htmlFor="matricula" className="block text-sm font-medium text-gray-700">
+                    Matrícula
                 </label>
                 <div className="mt-1">
                     <input
-                        id="nombre"
-                        name="nombre"
+                        id="matricula"
+                        name="matricula"
                         type="text"
+                        placeholder='Ej: 08083206'
                         value={form.matricula}
                         onChange={onChange}
                         required
@@ -128,6 +129,7 @@ const Signup: NextPage = () => {
                     name="email"
                     type="email"
                     autoComplete="email"
+                    placeholder='Ej: uagro@gmail.com'
                     value={form.email}
                     onChange={onChange}
                     required
@@ -136,23 +138,23 @@ const Signup: NextPage = () => {
                 </div>
                 </div>
 
-                <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                    Contraseña
-                </label>
-                <div className="mt-1">
-                    <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        autoComplete="current-password"
-                        value={form.password}
-                        onChange={onChange}
-                        required
-                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    />
-                </div>
-                </div>
+                {/*<div>
+                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                        Contraseña
+                    </label>
+                    <div className="mt-1">
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            autoComplete="current-password"
+                            value={form.password}
+                            onChange={onChange}
+                            required
+                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        />
+                    </div>
+                </div>*/}
 
                 <div className="flex items-center justify-between">
 

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { crearUsuario, login, renew, updateUser, updateUserPass } from "./controllers/auth";
+import { crearUsuario, login, renew, updateUser, updateUserPass, activate } from "./controllers/auth";
 import { check } from "express-validator"
 import { validarCampos } from "./middlewares/validar-campos";
 import {validarJWT} from "./middlewares/validar-jwt"
@@ -42,5 +42,8 @@ router.post("/updatePass",[
     //check("user.password","El password es obligatorio").not().isEmpty(),
     validarCampos
 ],updateUserPass);
+
+//Activar cuenta
+router.get("/activate/:token",activate);
 
 export default router;

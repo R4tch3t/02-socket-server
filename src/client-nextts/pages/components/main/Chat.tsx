@@ -74,7 +74,8 @@ const Home = () => {
 
       const {chatState}:any = useChatContext();
       let onlineU = 0;
-      const listaU = chatState.usuarios.length-1;
+      let listaU = chatState.usuarios.length;
+      listaU = listaU===0?0:listaU-1;
       chatState.usuarios.filter((user:any)=>user.id!==auth.id).map((v:any)=>{
         onlineU+=v.online??1
       });

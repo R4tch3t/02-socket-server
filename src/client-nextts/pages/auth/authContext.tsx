@@ -10,6 +10,7 @@ const initialState:any = {
     uuid: null,
     checking: true,
     logged: false,
+    activated: true,
     name: null,
     email: null
 }
@@ -17,6 +18,7 @@ const initialState:any = {
  const AuthProvider = ({ children }:any) => {
     const [auth, setAuth] = useState(initialState)
     const {dispatch}:any = useChatContext();
+
     const login = async (email:any, password:any) => {
         const resp = await fetchSinToken("login",{email,password},"POST");
         console.log("loginAuthProv");
@@ -29,6 +31,7 @@ const initialState:any = {
                 uuid: usuario.uuid,
                 checking: false,
                 logged: true,
+                activated: usuario.activated,
                 name: usuario.nombre,
                 email: usuario.email
             })
@@ -53,6 +56,7 @@ const initialState:any = {
             setAuth({
                 checking: false,
                 logged: false,
+                activated: true,
             });
             return false;
         }
@@ -127,6 +131,7 @@ const initialState:any = {
         setAuth({
             checking: false,
             logged: false,
+            activated: true,
         });
     }
 
