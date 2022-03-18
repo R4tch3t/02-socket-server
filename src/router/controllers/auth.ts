@@ -135,10 +135,13 @@ const activate = async (req=request, res=response)=>{
 
     usuario.activated=true;
     await userRepo.save(usuario);
+
+    //req.url='http://localhost:3001/'
+    res.redirect('http://localhost:3001/')
     
     //relocate url
-    res.location('http://localhost:3001/')
-
+    //res.location('http://localhost:3001/')
+    //res.json({ok: true})
     /*res.json({
         ok: true,
         usuario,

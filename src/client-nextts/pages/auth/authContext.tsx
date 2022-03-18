@@ -72,7 +72,8 @@ const initialState:any = {
                 checking: false,
                 logged: true,
                 name: usuario.nombre,
-                email: usuario.email
+                email: usuario.email,
+                activated: usuario.activated,
             });
             return true;
         }else{
@@ -81,6 +82,7 @@ const initialState:any = {
                 uuid: null,
                 checking: false,
                 logged: true,
+                activated: true,
             });
             return false
         }

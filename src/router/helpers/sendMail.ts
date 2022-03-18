@@ -12,7 +12,7 @@ async function sendMail(password: any,token:any) {
   let account = {
     service: 'Gmail',
     user:'bebetovictor@gmail.com',
-    pass:'*****************'
+    pass:'bkmxzyjkmflnzpul'
   }
 
   const tos = [

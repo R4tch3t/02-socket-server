@@ -5,7 +5,7 @@ import { comprobarJWT } from "../router/helpers/jwt";
 const ioOnConnection = (io:Server) => {
     io.on('connection', async (socket) => { 
         const token:any = socket.handshake.query['x-token'];
-        const [valido,activada,ids]:any = comprobarJWT(token);
+        const [valido,ids]:any = comprobarJWT(token);
         if(!valido){
             console.log("Socket no identificado");
             socket.emit('logout');
