@@ -2,7 +2,7 @@ import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationIcon } from '@heroicons/react/outline'
 
-export const ModalError=({open, setOpen, title, txt, btnTxt}:any)=>{
+export const ModalError=({open, setOpen, title, txt, btn1, btn2}:any)=>{
   //const [open, setOpen] = useState(true)
   //try{  
   const cancelButtonRef = useRef(null)
@@ -11,7 +11,7 @@ export const ModalError=({open, setOpen, title, txt, btnTxt}:any)=>{
     }*/
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" initialFocus={cancelButtonRef} onClose={setOpen}>
+      <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" initialFocus={cancelButtonRef} onClose={btn1.onClose} >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
@@ -60,8 +60,9 @@ export const ModalError=({open, setOpen, title, txt, btnTxt}:any)=>{
                   className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
                   onClick={() => setOpen(false)}
                 >
-                  {btnTxt}
+                  {btn1.txt}
                 </button>
+                
                 {/*<button
                   type="button"
                   className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
@@ -71,6 +72,19 @@ export const ModalError=({open, setOpen, title, txt, btnTxt}:any)=>{
                   Cancel
                 </button>*/}
               </div>
+              
+              {btn2&&<div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                
+                <button
+                  type="button"
+                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-500 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
+                  onClick={btn2.onClick}
+                >
+                  {btn2.txt}
+                </button>
+              </div>
+              }
+
             </div>
           </Transition.Child>
         </div>

@@ -50,6 +50,17 @@ const initialState:any = {
         return resp.msg;
     }
 
+    const resentemail = async (user:any) => {
+        const {nombre, matricula, email}:any = user
+        const resp = await fetchSinToken("login/resentemail",{email},"POST");
+        console.log("registerProv");
+        console.log(resp);
+        if(resp.ok){
+            return resp.ok;
+        }
+        return resp.msg;
+    }
+
     const verificaToken = useCallback( async()=>{
         const token = localStorage.getItem("token")
         if(!token){
@@ -144,7 +155,8 @@ const initialState:any = {
                 signup,
                 verificaToken,
                 updateUser,
-                logout
+                logout,
+                resentemail
             }} >
                 { children }
             </AuthContext.Provider>

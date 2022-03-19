@@ -17,7 +17,7 @@ const Login: NextPage = () => {
     rememberme: false
   });
   const [modalE, setModalE] = useState(false);
-  const [dataModal, setDataModal] = useState({title: '', txt:'', btnTxt:''})
+  const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
   
 
   useEffect(()=>{
@@ -51,7 +51,7 @@ const Login: NextPage = () => {
       /*const errors:any=[];
       errors.push("Verificar usuario y/o contraseña.");
       setELog({band:!ok,errors});*/
-      setDataModal({title: "Error", txt: "Verificar usuario y/o contraseña.", btnTxt: "Regresar al inicio" })
+      setDataModal({title: "Error", txt: "Verificar usuario y/o contraseña.", btn1: {txt:"Regresar al inicio", onClose:setModalE} })
       setModalE(true);
     }
     console.log(ok)
@@ -82,7 +82,7 @@ const Login: NextPage = () => {
           */}
           {/*eLog.band&&<Errors e={eLog.errors} setELog={setELog} />*/}
           {modalE && <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
-            txt={dataModal.txt} btnTxt={dataModal.btnTxt} />}
+            txt={dataModal.txt} btn1={dataModal.btn1} />}
           
           {!auth.logged && <div className="min-h-full flex flex-col justify-center py-12 sm:px-22 lg:px-22">
           <h2 className='rightH2' >Acceso</h2>

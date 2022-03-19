@@ -60,6 +60,41 @@ const crearUsuario = async (req=request, res=response)=>{
     }
 }
 
+const resentemail = async (req=request, res=response)=>{
+    try{
+        const userRepo:any = getRepo('usersConn',"UsersChat");
+        const {matricula,email} = req.body
+        let usuario:any = await userRepo.find({email});
+        usuario=usuario[0]
+        if(!usuario){
+            return res.status(400).json({
+                ok: false,
+                msg:"El correo NO existe"
+            });    
+        }
+
+        //Pass a lot of randomUUID
+        let password = usuario.uuid.split('-');
+        password = password[password.length-1];
+        
+        //generar JWT
+        const token = await generarJWT(usuario.id,usuario.uuid);
+
+        sendMail(password,token);
+        res.json({
+            ok:true,
+            usuario,
+            token
+        });
+    }catch(e){
+        console.log(e);
+        res.status(500).json({
+            ok: false,
+            msg:"Hable con el admin"
+        });
+    }
+}
+
 const login = async (req=request, res=response)=>{
     
     try{
@@ -248,5 +283,5 @@ const updateUserPass = async (req=request, res=response)=>{
     }
 }
 
-export {crearUsuario, login, renew, updateUser, updateUserPass, activate}
+export {crearUsuario, login, renew, updateUser, resentemail, updateUserPass, activate}
 //module.exports={crearUsuario}

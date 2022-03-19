@@ -9,7 +9,7 @@ const Signup: NextPage = () => {
   const {auth}:any = useAppContext();
   const [modalS, setModalS] = useState(false)
     const [modalE, setModalE] = useState(false)
-    const [dataModal, setDataModal] = useState({title: '', txt:'', btnTxt:''})
+    const [dataModal, setDataModal] = useState({title: '', txt:'', btn1:{txt:'',onClose:setModalE}})
     const {signup}:any = useAppContext()
     const [form, setForm] = useState({
         matricula:'08083206',
@@ -57,7 +57,7 @@ const Signup: NextPage = () => {
             //errors.push(ok)
             //console.log("error? "+ok)
             //setELog({band:true,errors});
-            setDataModal({title: "Error", txt: ok, btnTxt: "Regresar al registro" })
+            setDataModal({title: "Error", txt: ok, btn1: {txt:"Regresar al registro", onClose:setModalE} })
             setModalE(true);
         } else {
             /*const success:any=[];
@@ -66,7 +66,7 @@ const Signup: NextPage = () => {
             //errors.push("Es posible que la cuenta ya exista.");
             setSLog({band:ok,success});
             setELog({band:false,errors:[]});*/
-            setDataModal({title: "Éxito", txt: "El usuario se registró con éxito", btnTxt: "Regresar al registro" })
+            setDataModal({title: "Éxito", txt: "El usuario se registró con éxito", btn1: {txt: "Regresar al registro", onClose:setModalE} })
             setModalS(true);
         }
         
@@ -91,9 +91,9 @@ const Signup: NextPage = () => {
           */}
           {/*eLog.band&&<Errors e={eLog.errors} setELog={setELog} />*/}
           {modalS && <ModalSuccess open={modalS} setOpen={setModalS} title={dataModal.title} 
-        txt={dataModal.txt} btnTxt={dataModal.btnTxt} />}
+        txt={dataModal.txt} btnTxt={dataModal.btn1.txt} />}
         {modalE && <ModalError open={modalE} setOpen={setModalE} title={dataModal.title} 
-        txt={dataModal.txt} btnTxt={dataModal.btnTxt} />}
+        txt={dataModal.txt} btn1={dataModal.btn1} />}
           
           {!auth.logged && <div className="min-h-full flex flex-col justify-center py-12 sm:px-22 lg:px-22">
           <h2 className='rightH2' >Registro</h2>

