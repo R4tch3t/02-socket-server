@@ -160,10 +160,18 @@ const renew = async (req=request, res=response)=>{
 }
 
 const activate = async (req=request, res=response)=>{
+    try{
     const userRepo:any = getRepo('usersConn','UsersChat');
     //const {id, uuid}:any = req;
     let {token} = req.params;
-    const {id} = comprobarJWT(token)[1]
+    const [valido,ids] = comprobarJWT(token)
+    const {id} = ids
+    if(!valido){
+        return res.status(500).json({
+            ok: false,
+            msg:"token expirado, volver a enviar el correo de verificación..."
+        });
+    }
     //obtenr usuario por id
     let usuario = await userRepo.find({id})
     usuario=usuario[0]
@@ -183,6 +191,13 @@ const activate = async (req=request, res=response)=>{
         token,
         msg: 'Activate'
     });*/
+    }catch(e){
+        console.log(e)
+        res.status(404).json({
+            ok: false,
+            msg:"Hable con el administrador"
+        });
+    }
 }
 
 const updateUser = async (req=request, res=response)=>{

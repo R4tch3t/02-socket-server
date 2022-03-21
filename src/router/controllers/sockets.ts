@@ -5,8 +5,11 @@ import { getRepo } from "../../config/typeorm";
 
 const usuarioConectado = async ({id,uuid}:any)=>{
     try{
+        console.log('usuario conectado: ')
+        console.log(id)
         const userRepo:any = getRepo('usersConn','UsersChat');//.findOne(id);
-        let usuario:any = await userRepo.find(id);
+        let usuario:any = await userRepo.find({id});
+        console.log(usuario)
         usuario=usuario[0];
         
         usuario.online=true;
@@ -22,7 +25,7 @@ const usuarioConectado = async ({id,uuid}:any)=>{
 const usuarioDesconectado = async ({id,uuid}:any)=>{
     try{
         const userRepo:any = getRepo('usersConn','UsersChat');
-        let usuario:any = await userRepo.find(id);
+        let usuario:any = await userRepo.find({id});
         usuario=usuario[0];
         
         usuario.online=false;
