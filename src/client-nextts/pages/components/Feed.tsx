@@ -88,12 +88,12 @@ export const Feed: NextPage = () => {
                     <img className="h-6 w-6 rounded-full" src={imageUrl/*activityItem.person.imageUrl*/} alt="" />
                     <div className="flex-1 space-y-1">
                         <div className="flex items-center justify-between">
-                        <h3 className="text-sm font-medium">{user.nombre}</h3>
-                            {user.online&&<>
+                        <h3 className="text-sm font-medium">{user.alumno.nomentalu}</h3>
+                            {(user.online===true||user.online===1)&&<>
                                 <span className="absolute bottom-0 right-0 block h-3 w-3 rounded-full ring-2 ring-white bg-green-400" />
                                 <p className="text-sm text-green-500"><b>En linea</b></p>
                             </>}
-                            {!user.online&&<>
+                            {(user.online===false||user.online===0)&&<>
                                 <span className="absolute bottom-0 right-0 block h-3 w-3 rounded-full ring-2 ring-white bg-gray-400" />
                                 <p className="text-sm text-gray-500">{diffDate(user.lastConn,new Date())}</p>
                             </>}

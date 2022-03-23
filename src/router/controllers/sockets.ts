@@ -5,10 +5,11 @@ import { getRepo } from "../../config/typeorm";
 
 const usuarioConectado = async ({id,uuid}:any)=>{
     try{
-        console.log('usuario conectado: ')
-        console.log(id)
         const userRepo:any = getRepo('usersConn','UsersChat');//.findOne(id);
-        let usuario:any = await userRepo.find({id});
+        let usuario:any = await userRepo.find({
+            where: {id},
+            relations:['alumno']
+        });
         console.log(usuario)
         usuario=usuario[0];
         
@@ -25,7 +26,10 @@ const usuarioConectado = async ({id,uuid}:any)=>{
 const usuarioDesconectado = async ({id,uuid}:any)=>{
     try{
         const userRepo:any = getRepo('usersConn','UsersChat');
-        let usuario:any = await userRepo.find({id});
+        let usuario:any = await userRepo.find({
+            where: {id},
+            relations:['alumno']
+        });
         usuario=usuario[0];
         
         usuario.online=false;
@@ -76,14 +80,19 @@ const getUsuarios = async ({id,uuid}:any)=>{
     
     const userRepo:any = getRepo('usersConn','UsersChat');
     
-    let usuarios:any = await userRepo.find({order: {
-        lastConn: 'DESC',
-        online: "DESC",
-    }});
+    let usuarios:any = await userRepo.find({
+        order: {
+            lastConn: 'DESC',
+            online: "DESC",
+        },
+        relations:['alumno']
+    });
+
     id=parseInt(id)
     if(usuarios&&usuarios.length>0){
         usuarios = await getUsersMsg(usuarios);
     }
+
     console.log("lastMsg");
         console.log(usuarios);
     

@@ -26,7 +26,7 @@ const Home = () => {
     const {auth,logout}:any = useAppContext();
     const [state, setState]:any = useState({logBand: true, btnHome: [{html: 'Ver perfil', href: '#'}]});
     const user = {
-        name: auth.name,
+        name: auth.usuario?auth.usuario.alumno.nomentalu:null,
         email: auth.email,
         role: 'Alumno(a)',
         imageUrl:

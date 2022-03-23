@@ -11,7 +11,7 @@ const initialState:any = {
     checking: true,
     logged: false,
     activated: true,
-    name: null,
+    usuario: null,
     email: null
 }
 
@@ -32,8 +32,9 @@ const initialState:any = {
                 checking: false,
                 logged: true,
                 activated: usuario.activated,
-                name: usuario.nombre,
-                email: usuario.email
+                //name: usuario.nombre,
+                email: usuario.email,
+                usuario
             })
         }
         return resp.ok
@@ -82,7 +83,7 @@ const initialState:any = {
                 uuid: usuario.uuid,
                 checking: false,
                 logged: true,
-                name: usuario.nombre,
+                usuario,
                 email: usuario.email,
                 activated: usuario.activated,
             });
@@ -120,7 +121,7 @@ const initialState:any = {
                 uuid: usuario.uuid,
                 checking: false,
                 logged: true,
-                name: usuario.nombre,
+                usuario,
                 email: usuario.email
             });
             return true;

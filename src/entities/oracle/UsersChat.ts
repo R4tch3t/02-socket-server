@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from "type-graphql";
-import { BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany,getConnection, ObjectIdColumn, OneToMany, PrimaryGeneratedColumn, BeforeInsert, getManager, EntityManager } from "typeorm";
+import { BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany,getConnection, ObjectIdColumn, OneToMany, PrimaryGeneratedColumn, BeforeInsert, getManager, EntityManager, OneToOne } from "typeorm";
+import { Tabentalu } from "./Tabentalu";
 //import { Mensaje } from "./Mensaje";
 @ObjectType()
 //@Index("SYS_C007127", ["id"], { unique: true })
@@ -43,6 +44,10 @@ export class UsersChat extends BaseEntity {
   })
   lastConn!: Date;
   
+  @OneToOne(() => Tabentalu, (tabentalu) => tabentalu.userChat)
+  @JoinColumn([{ name: "MATRICULA", referencedColumnName: "cveentalu" }])
+  alumno!: Tabentalu;
+
   //@Field(()=> EntityManager)
   //manager!: EntityManager
   /*@Field(()=>[Mensaje],{nullable: true})

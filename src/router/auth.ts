@@ -22,7 +22,7 @@ router.post("/resentemail",[
 
 //Login
 router.post("/",[
-    check("email","El email es obligatorio").isEmail(),
+    check("email","El email o matrícula son obligatorios").not().isEmpty(),
     check("password","El password es obligatorio").not().isEmpty(),
     validarCampos
 ],login);

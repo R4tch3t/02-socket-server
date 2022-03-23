@@ -11,24 +11,38 @@ import sendMail from "../helpers/sendMail";
 const crearUsuario = async (req=request, res=response)=>{
     try{
 
-        const userRepo:any = getRepo('usersConn',"UsersChat");
-        const {email, /*password*/} = req.body
-        const existeEmail = await userRepo.find({email});
-        console.log(existeEmail)
+        const userChatRepo:any = getRepo('usersConn',"UsersChat");
+        const {matricula,email, /*password*/} = req.body
+        const existUser = await userChatRepo.find({where: [{email},{matricula}]});
+        console.log(existUser)
         
-        if(existeEmail&&existeEmail.length>0){
+        if(existUser&&existUser.length>0){
             return res.status(400).json({
                 ok: false,
-                msg:"El correo ya existe"
+                msg:"El usuario ya existe"
             });    
         }
-        
-        const usuario: any = userRepo.create(req.body)
+
+        const userRepo:any = getRepo('usersConn',"Tabentalu");
+        const cveentalu=matricula
+        let existeMatricula = await userRepo.find({cveentalu});
+        existeMatricula=existeMatricula[0]
+        console.log(existeMatricula)
+
+        if(!existeMatricula){
+            return res.status(400).json({
+                ok: false,
+                msg:"La mátricula no existe"
+            });    
+        }
+
+
+        const usuario: any = userChatRepo.create(req.body)
         const salt = bcrypt.genSaltSync();
 
         //gen next id
         //usuario.manager=userRepo.manager
-        await usuario.beforeInsert(userRepo.manager)
+        await usuario.beforeInsert(userChatRepo.manager)
         
         //gen uuid and password encrypt
         usuario.uuid=randomUUID();
@@ -40,7 +54,7 @@ const crearUsuario = async (req=request, res=response)=>{
         usuario.password=bcrypt.hashSync(password,salt);
         
         console.log(usuario)
-        await userRepo.save(usuario);
+        await userChatRepo.save(usuario);
         
         //generar JWT
         const token = await generarJWT(usuario.id,usuario.uuid);
@@ -100,14 +114,28 @@ const login = async (req=request, res=response)=>{
     try{
         const userRepo:any = getRepo('usersConn','UsersChat');
         const {email, password} = req.body
-        const usuario = (await userRepo.find({email}))[0];
-        
+        const matricula = email;
+        let usuario = await userRepo.find({
+            where: {email},
+            relations: ['alumno']
+        });
+        usuario = usuario[0]
+
         if(!usuario){
-            return res.status(404).json({
-                ok: false,
-                msg:"El correo NO existe"
-            });    
+            usuario = await userRepo.find({
+                where: {matricula},
+                relations:['alumno']
+            });
+            usuario = usuario[0]
+            
+            if(!usuario){
+                return res.status(404).json({
+                    ok: false,
+                    msg:"El usuario NO existe"
+                });    
+            }
         }
+
         console.log("usuario: ");
         console.log(usuario.password);
         console.log("password: " + password);
@@ -147,7 +175,9 @@ const renew = async (req=request, res=response)=>{
     const token = await generarJWT(id,uuid);
 
     //obtenr usuario por id
-    let usuario = await userRepo.find({id})
+    let usuario = await userRepo.find({
+        where: {id},
+        relations:['alumno']})
     usuario=usuario[0]
 
     res.json({

@@ -92,13 +92,13 @@ const Login: NextPage = () => {
                 <form className="space-y-6" onSubmit={onSubmit} method="POST">
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                      Correo electrónico
+                      Correo ó matrícula
                     </label>
                     <div className="mt-1">
                       <input
                         id="email"
                         name="email"
-                        type="email"
+                       // type="email"
                         value={form.email}
                         autoComplete="email"
                         onChange={onChange}

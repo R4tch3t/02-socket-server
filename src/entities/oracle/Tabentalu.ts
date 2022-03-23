@@ -1,6 +1,7 @@
-import { Column, Entity, Index, OneToMany } from "typeorm";
+import { Column, Entity, Index, OneToMany, OneToOne } from "typeorm";
 import { AlumnosConBeca } from "./AlumnosConBeca";
 import { AlumnosConCasa } from "./AlumnosConCasa";
+import { UsersChat } from "./UsersChat";
 
 @Index("SYS_C007022", ["cveentalu"], { unique: true })
 @Entity("TABENTALU")
@@ -121,4 +122,10 @@ export class Tabentalu {
     (alumnosConCasa) => alumnosConCasa.matricula2
   )
   alumnosConCasas: AlumnosConCasa[];
+
+  @OneToOne(
+    () => UsersChat,
+    (userChat) => userChat.alumno
+  )
+  userChat: UsersChat;
 }
