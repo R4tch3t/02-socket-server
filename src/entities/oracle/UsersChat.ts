@@ -1,7 +1,9 @@
 import { Field, Int, ObjectType } from "type-graphql";
 import { BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany,getConnection, ObjectIdColumn, OneToMany, PrimaryGeneratedColumn, BeforeInsert, getManager, EntityManager, OneToOne } from "typeorm";
-import { Tabentalu } from "./Tabentalu";
+//import { Tabentalu } from "./Tabentalu";
 //import { Mensaje } from "./Mensaje";
+import { Tabentalu } from "./TabentaluChat"
+
 @ObjectType()
 //@Index("SYS_C007127", ["id"], { unique: true })
 @Entity("USERS_CHAT")
@@ -82,3 +84,4 @@ export class UsersChat extends BaseEntity {
     //}
   }*/
 }
+
